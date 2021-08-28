@@ -1,0 +1,85 @@
+.profile-information-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .edit-button {
+    background: white;
+    display: flex;
+    align-self: flex-end;
+    justify-content: space-between;
+    width: 59px;
+    border-radius: 2px;
+    padding: 0 3px;
+    cursor: pointer;
+
+    .label {
+      font-size: 14px;
+      font-family: "Open Sans";
+      font-weight: 900;
+      padding: 2px;
+    }
+  }
+
+  .top-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    .photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 75px;
+    }
+    .details {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      margin: 15px 0 15px 20px;
+      padding: 12px 0px 0 0;
+
+      .title {
+        font: normal normal bold 34px/58px Lato;
+        letter-spacing: 0px;
+        color: #121212;
+        opacity: 1;
+      }
+      .subtitle {
+        font: normal normal normal 24px/58px Lato;
+        letter-spacing: 0px;
+        color: #121212;
+        margin: -20px 0 0 0;
+      }
+      .email-margin {
+        margin: -8px 0 0 0;
+      }
+    }
+  }
+
+  .bottom-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 45px 0 36px 0px;
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .data {
+        font: normal normal normal 13px/16px Lato;
+        letter-spacing: 0px;
+        color: #0f1b1b;
+      }
+    }
+  }
+
+  .generic-info-title {
+    font: normal normal normal 13px/16px Lato;
+    letter-spacing: 0px;
+    color: #607072;
+  }
+}

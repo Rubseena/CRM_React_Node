@@ -1,0 +1,151 @@
+.background-color-primary {
+  background-color: var(--primary-background-color);
+}
+
+.ant-btn {
+  &.custom-button-grey {
+    background-color: var(--primary-disabled-color);
+    border: none;
+    box-shadow: 0px 3px 6px #00000029;
+    transition: 0.4s;
+    border-radius: 0.5em;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: var(--primary-color-focus);
+    }
+  }
+  &.custom-button {
+    background-color: var(--primary-color);
+    border: none;
+    box-shadow: 0px 3px 6px #00000029;
+    transition: 0.4s;
+    border-radius: 0.5em;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: var(--primary-color-focus);
+    }
+  }
+
+  &.custom-outline-button {
+    background-color: transparent;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transition: 0.4s;
+    margin-top: 2em;
+    border-radius: 0.5em;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+      box-shadow: 0px 3px 6px #00000029;
+    }
+  }
+}
+
+.ant-form-item.custom-form-item {
+  &:not(.ant-form-item-has-error):not(.ant-form-item-has-warning) {
+    .ant-input-prefix {
+      color: var(--primary-color);
+    }
+  }
+
+  .ant-input-affix-wrapper {
+    border-radius: 0.5em;
+
+    &:hover {
+      border-color: var(--primary-color);
+    }
+  }
+
+  .ant-input-affix-wrapper:focus,
+  .ant-input-affix-wrapper-focused {
+    box-shadow: 0 0 0 2px var(--primary-background-color);
+  }
+}
+
+.custom-link {
+  color: var(--primary-color);
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: var(--primary-color-focus);
+  }
+}
+
+.ant-steps-item-container svg {
+  fill: var(--primary-color);
+}
+
+.text-description {
+  font-size: 18px;
+  font-family: "Open Sans";
+  font-weight: 100;
+  color: #012329;
+  letter-spacing: 0px;
+  margin-top: 16px;
+  margin-bottom: 0px;
+}
+
+.ant-layout-header {
+  background: #e7edf0 !important;
+}
+
+.ant-layout {
+  background: #e7edf0 !important;
+}
+
+.ant-checkbox-inner {
+  width: 18px !important;
+  height: 18px !important;
+  border-radius: 9px !important;
+  &::after {
+    background: var(--primary-color) !important;
+  }
+}
+
+.ant-checkbox-checked {
+  .ant-checkbox-inner {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+  }
+}
+
+.ant-switch-checked {
+  background-color: var(--primary-color) !important;
+}
+
+.ant-spin-dot-item {
+  background-color: var(--primary-color-focus) !important;
+}
+
+// Generic classes
+
+.generic-title-grey {
+  text-align: left;
+  font: normal normal normal 18px/24px Lato;
+  letter-spacing: 0px;
+  color: #838383;
+  opacity: 1;
+}
+
+.generic-title {
+  text-align: left;
+  font: normal normal normal 16px/19px Lato;
+  letter-spacing: 0px;
+  color: #05474f;
+  opacity: 1;
+}
+
+// Box shadows
+
+.box-shadow-card-material {
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
