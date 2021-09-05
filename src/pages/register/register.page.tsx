@@ -6,10 +6,8 @@ import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined } from '
 import { useHistory } from "react-router-dom";
 
 import RegistrationProgress from "../../components/register-progress/register-progress.component";
-import {
-  InformationForm, ConfirmationForm
-} from "../../components/register-form/register-form.component";
-
+import {RegistrationForm} from "../../components/register-form/register-form.component";
+import { postClientRegisterUser } from "../../services/admin-services/dashboardServices";
 import clientImage from "../../assets/images/CleintMain.svg";
 import profImage from "../../assets/images/ProfessionalMain.svg";
 
@@ -49,34 +47,43 @@ const RegisterPage: React.FC = (props: any) => {
 
   // this useEffect is specifically for the registration submission.
   // Use another useEffect for different purposes.
-  // useEffect(() => {
-  //   if (userType && userType.id === 0 && currentProgressIndex === 4) {
-  //     confirmRegistration();
-  //   } else if (userType && userType.id === 1 && currentProgressIndex === 3) {
-  //     confirmRegistration();
-  //   }
-  // }, [registrationData]);
+  useEffect(() => {
+    confirmRegistration();
+  }, [registrationData]);
 
   //#endregion
 
   //#region General_functions
   const { Step } = Steps;
-  const goToNextStep = () => {
-    setcurrentProgressIndex(currentProgressIndex + 1);
+  const confirmRegistration = async () => {
+    try {
+      let regUser = null;
+      // if (registrationData.firstName === undefined || registrationData.firstName === null) {
+      //   registrationData.firstName = ""
+      // }
+      regUser = await postClientRegisterUser(registrationData);
+      console.log("This is regUser : ",regUser)
+
+      if (regUser && regUser.status === 200) {
+        history.replace("/thankyou");
+      } else {
+        message.error("Registration failed, please retry ");
+      }
+    } catch (error) {
+      message.error("Error caught in registering: " + error);
+    }
   };
 
-  const goToPreviousStep = () => {
-    setcurrentProgressIndex(currentProgressIndex - 1);
-  };
-  console.log("registrationData", registrationData);
 
+  // const saveRegistrationData = (formValues: any) => {
+  //   setRegistrationData((saveValues: any) => ({
+  //     // ...prevState,prevState: any
+  //    let regUser= null;
+  //    regUser = await postClientRegisterUser(saveValues);
 
-  const saveRegistrationData = (values: any) => {
-    setRegistrationData((prevState: any) => ({
-      ...prevState,
-      ...values,
-    }));
-  };
+  //     ...formValues,
+  //   }));
+  // };
 
   //#endregion
 
@@ -89,25 +96,22 @@ const RegisterPage: React.FC = (props: any) => {
       </Col>
       {/* ROW 3: Forms  */}
 
-      <InformationForm
-        isVisible={currentProgressIndex === 0}
+      <RegistrationForm
         currentProgressIndex={currentProgressIndex}
-        goToPreviousStep={goToPreviousStep}
         steps={steps}
-        goToNextStep={goToNextStep}
-        saveRegistrationData={saveRegistrationData}
+        saveRegistrationData={confirmRegistration}
         setRegData={setRegistrationData}
       />
 
 
-      <ConfirmationForm
-        isVisible={currentProgressIndex === 4}
+      {/* <ConfirmationForm
+        // isVisible={currentProgressIndex === 4}
         currentProgressIndex={currentProgressIndex}
-        goToPreviousStep={goToPreviousStep}
+        // goToPreviousStep={goToPreviousStep}
         steps={steps}
-        goToNextStep={goToNextStep}
+        // goToNextStep={goToNextStep}
         saveRegistrationData={saveRegistrationData}
-      />
+      /> */}
     </div>
   );
 };

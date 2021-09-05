@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Route, useRouteMatch, Link } from "react-router-dom";
+import { Switch, Route, useRouteMatch, Link,useHistory } from "react-router-dom";
 import { Button, Row, Card, Col, Image, List, Avatar,Steps, Statistic, Spin } from "antd";
 import { ROUTES } from "../../constants/routes";
 import LandingPageButton from "../../components/landing-page-button/landing-page-button.component";
@@ -74,6 +74,7 @@ const DashboardPage: React.FC = () => {
             setChuckCount(chunkCount + 1);
         }
     };
+  
     const data1 = [
         {
           title: 'Rubseena',
@@ -108,7 +109,7 @@ const DashboardPage: React.FC = () => {
 
       const fetchList = async () => {
         const Response = await getAPIList();
-        console.log(Response);
+        console.log("dash - response",Response);
         if (Response.status === 200) {
           viewMore(
             Response.data.sort((Invoice1: any, Invoice2: any) => {
@@ -138,11 +139,14 @@ const DashboardPage: React.FC = () => {
     //   await fetchInvoice("All");
     //   setLoadingList(false);
     await fetchList()
+    // console.log("My Id" ,listData.Id);
 
           setIsLoading(false);
         };
         fetchInitialData();
       }, []);
+    //   const history = useHistory();
+    // history.push(`/viewCust:${listData.Id}`)
 
     return (
         <Switch>
@@ -184,7 +188,7 @@ const DashboardPage: React.FC = () => {
                                         <div className="list-header-wrapper ant-list-header">
                                             <div className="list-header">
                                                 <div className="header-text-wrapper">
-                                                    <Link to={ROUTES.VIEW_CUST} style={{color:"black",fontSize:"15px"}}>
+                                                    <Link to={{pathname:ROUTES.VIEW_CUST }} style={{color:"black",fontSize:"15px"}}>
                                                     <Row style={{flexFlow:"wrap-reverse"}}>
                                                   <Col> <UserOutlined /></Col>
                                                   <Col>{"View"}</Col>                                                  

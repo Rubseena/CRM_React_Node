@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./registration-success.styles.scss";
 import ThanksImage from "../../assets/images/Thanks_image.svg";
 import { textResources } from "../../constants/constants-data";
@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 
 const RegistrationSuccess = () => {
   const history = useHistory();
+
   return (
     <div className="reg-success-page">
       <div className="reg-success-container">

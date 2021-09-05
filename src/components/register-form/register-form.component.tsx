@@ -11,11 +11,6 @@ import { ReactComponent as PhoneIcon } from "../../assets/icons/phone.svg";
 
 import { Row, Button, Form, DatePicker, Upload, message, Checkbox, Input } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-// import { some, isEmpty } from "lodash";
-// import {
-//     getclientRegtypes,
-//     getprofRegtypes,
-// } from "../../services/user-services/registrationService";
 import { convertBase64, displayBase64 } from "../../utils/helper";
 import pdfIcon from "../../assets/icons/pdf.svg";
 
@@ -24,12 +19,12 @@ const MobileRegex = "[0-9]{10}";
 
 interface RegistrationFormProps {
     currentProgressIndex: number;
-    goToPreviousStep: () => void;
-    goToNextStep: () => void;
+    // goToPreviousStep: () => void;
+    // goToNextStep: () => void;
     steps: Array<{ id: number; title: string }>;
     saveRegistrationData: (values: any) => void;
     setRegData?: any;
-    isVisible: boolean;
+    // isVisible: boolean;
 }
 
 const beforeUpload = (file: any) => {
@@ -45,53 +40,34 @@ const beforeUpload = (file: any) => {
 }
 
 
-export const InformationForm: React.FC<RegistrationFormProps> = (
+export const RegistrationForm: React.FC<RegistrationFormProps> = (
     props: RegistrationFormProps
 ) => {
     const {
         currentProgressIndex,
-        goToPreviousStep,
-        goToNextStep,
+        // goToPreviousStep,
+        // goToNextStep,
         steps,
         saveRegistrationData,
         setRegData,
-        isVisible,
+        
+        // isVisible,
     } = props;
-
-    const [typeOptions, setTypeOptions] = useState([]);
-    const genderOptions = [
-        { id: "M", name: "Male" },
-        { id: "F", name: "Female" },
-        { id: "U", name: "Transgender" },
-        { id: "O", name: "Others" },
-    ];
-
-    // useEffect(() => {
-    //     const fetchTypeData = async () => {
-    //         const clientTypeData = await getclientRegtypes();
-    //         setTypeOptions(clientTypeData.data);
-    //     };
-    //     fetchTypeData();
-    // }, []);
 
     const [form] = Form.useForm();
     const [clientType, setClientType] = useState(0);
 
-    const onSelected = (label: string, value: string) => {
-        form.setFieldsValue({ [label]: value });
-    };
 
     //To delete keys from an array
     const deleteKey = (keys: Array<string>, obj: any) => {
         keys.map((key) => delete obj[key]);
     };
 
-    const onFinishInformation = (values: any) => {
+    const onFinishInformation = (formValues: any) => {
         let updatedValues = {
-            ...values,
+            ...formValues,
         };
         setRegData({});
-        clientType !== 1 &&
             deleteKey(
                 [
                     "emergencyContactPerson",
@@ -102,14 +78,14 @@ export const InformationForm: React.FC<RegistrationFormProps> = (
                 updatedValues
             );
 
-        if (values.contactNumber === undefined || values.contactNumber === null || values.contactNumber === "") {
+        if (formValues.contactNumber === undefined || formValues.contactNumber === null || formValues.contactNumber === "") {
             updatedValues = {
-                contactNumber: values.mobileNumber,
+                contactNumber: formValues.mobileNumber,
                 ...updatedValues,
             }
         }
         saveRegistrationData(updatedValues);
-        goToNextStep();
+        // goToNextStep();
     };
 
     const onFinishFailedInformation = (errorInfo: any) => {
@@ -118,9 +94,9 @@ export const InformationForm: React.FC<RegistrationFormProps> = (
 
     return (
         <Form
-            className={`${
-                isVisible ? "visible-registration-form" : "hidden-registration-form"
-                }`}
+            // className={`${
+            //     isVisible ? "visible-registration-form" : "hidden-registration-form"
+            //     }`}
             name={`registration-form-step-${currentProgressIndex}`}
             form={form}
             initialValues={{ remember: true }}
@@ -130,65 +106,16 @@ export const InformationForm: React.FC<RegistrationFormProps> = (
             <Row justify="center">
                 <div className="inputs">
                     <>
-                        {/* TYPE */}
-                        {/* <Form.Item
-                            name="clientTypeId"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Select the Type of User",
-                                },
-                            ]}
-                        >
-                            <CustomSelect
-                                options={typeOptions}
-                                placeholder="User Type"
-                                onChange={(value) => {
-                                    onSelected("type", value);
-                                    setClientType(value);
-                                }}
-                                returnId
-                            />
-                        </Form.Item> */}
-
-                        {/* FIRST NAME */}
-                        {/* {clientType !== 0 && ( */}
-                            <Form.Item
-                                name="firstName"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Enter the First Name",
-                                    },
-                                ]}
-                                
-                            >
-                                <CustomInputField
-                                    type="text"
-                                    placeholder={"First Name"                                   }
-                                    pattern={
-                                        // clientType === 1
-                                        //     ? 
-                                            // "[a-zA-Z]+[ ][a-zA-Z]*"
-                                            // : 
-                                            ".+"
-                                    }
-                                />
+                            <Form.Item name="firstName" rules={[{required: true,message: "Enter the First Name",},]}  >
+                                <CustomInputField type="text" placeholder={"First Name"} pattern={".+"}/>
                             </Form.Item>
-                         {/* )} */}
-
-                        {/* LAST NAME */}
-                        {/* {clientType === 1 && ( */}
                             <Form.Item name="lastName">
                                 <CustomInputField type="text" placeholder="Last Name" />
                             </Form.Item>
                             <Form.Item name="companyName" rules={[{ required: true, message: "Enter the Company Name" }]}>
                                 <CustomInputField type="text" placeholder="Company Name" />
                             </Form.Item>
-                            <Form.Item
-                            name="address"
-                            
-                        >
+                            <Form.Item name="address">
                             <CustomInputField type="text" placeholder="Address Line 1" />
                         </Form.Item>
 
@@ -206,256 +133,45 @@ export const InformationForm: React.FC<RegistrationFormProps> = (
                             </Form.Item>
                             <Form.Item name="postalCode">
                                 <CustomInputField type="text" placeholder="Postal Code" />
-                            </Form.Item>
-                        {/* )} */}
-
-                        {/* GENDER */}
-                        {/* {clientType === 1 && ( */}
-                            {/* <Form.Item name="gender">
-                                <CustomSelect
-                                    options={genderOptions}
-                                    placeholder="Gender"
-                                    returnId
-                                    onChange={(value) => onSelected("gender", value)}
-                                />
-                            </Form.Item> */}
-                        {/* )} */}
-
-                        {/* Email ID */}
-                        {/* {clientType !== 0 && ( */}
-                            <Form.Item
-                                name="emailId"
-                                rules={[
-                                    { required: true, message: "Enter the E-mail Id" },
-                                ]}
-                            >
+                            </Form.Item>    
+                            <Form.Item name="emailId" rules={[{ required: true, message: "Enter the E-mail Id" },]}>
                                 <CustomInputField type="email" placeholder="E-mail" pattern={EmailRegex} />
                             </Form.Item>
-                        {/* )} */}
-
-                        {/* Contact Number */}
-                        {/* {clientType !== 0 && ( */}
-                            <Form.Item
-                                name="contactNumber"
-                            >
-                                <CustomInputField
-                                    type="tel"
-                                    placeholder="Contact Number"
-                                    pattern="[0-9]{10}"
-                                />
-                            </Form.Item>
-                        {/* )} */}
-
-                        {/* Mobile Number */}
-                        {/* {clientType !== 0 && ( */}
-                            <Form.Item
-                                name="mobileNumber"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Enter the Mobile Number",
-                                    }
-                                ]}
-                            >
-                                <CustomInputField
-                                    type="tel"
-                                    placeholder="Mobile Number"
-                                    pattern={MobileRegex}
-                                />
-                            </Form.Item>
-                        {/* )} */}                  
+                            <Form.Item name="contactNumber">
+                                <CustomInputField type="tel" placeholder="Contact Number" pattern="[0-9]{10}"/>
+                            </Form.Item>                        
+                            <Form.Item name="mobileNumber" rules={[{required: true,message: "Enter the Mobile Number",}]}>
+                                <CustomInputField type="tel" placeholder="Mobile Number" pattern={MobileRegex}/>
+                            </Form.Item>                
                     </>
                 </div>
             </Row>
 
             <Row justify="space-between">
-                {currentProgressIndex > 0 && (
-                    <Button
-                        className="progress-button keep-left"
-                        onClick={() => goToPreviousStep()}
-                    >
-                        {"PREVIOUS"}
-                    </Button>
-                )}
-
                 <Button
                     type="primary"
                     htmlType="submit"
                     className="progress-button keep-right"
                 >
-                    {currentProgressIndex === steps.length - 1 ? "SUBMIT" : "SUBMIT"}
+                    {"SUBMIT"}
                 </Button>
             </Row>
         </Form>
     );
 };
 
-export const DeliveryForm: React.FC<RegistrationFormProps> = (
-    props: RegistrationFormProps
-) => {
-    const {
-        currentProgressIndex,
-        goToPreviousStep,
-        goToNextStep,
-        steps,
-        saveRegistrationData,
-        isVisible,
-    } = props;
 
-    const [form] = Form.useForm();
-
-    const [addressState, setaddressState] = useState(true);
-
-    const onFinishAddress2 = (values: any) => {
-        let updatedValues = {};
-        if (
-            Object.prototype.hasOwnProperty.call(values, "deliveryAddress") &&
-            Object.prototype.hasOwnProperty.call(values, "deliveryCity") &&
-            Object.prototype.hasOwnProperty.call(values, "deliveryState") &&
-            Object.prototype.hasOwnProperty.call(values, "deliveryCountry") &&
-            Object.prototype.hasOwnProperty.call(values, "serviceDeliveryPostcode")
-        ) {
-            updatedValues = {
-                serviceDeliveryAddressLine1: values.deliveryAddress,
-                serviceDeliveryAddressLine2:
-                    values.deliveryAddress2 && values.deliveryAddress2,
-                serviceDeliveryApartmentNumber:
-                    values.deliveryApartment && values.deliveryApartment,
-                serviceDeliveryCity: values.deliveryCity,
-                serviceDeliveryState: values.deliveryState,
-                serviceDeliveryCountry: values.deliveryCountry,
-                serviceDeliveryPostcode: values.serviceDeliveryPostcode,
-            };
-        } else {
-            updatedValues = {
-                serviceDeliveryAddressLine1: "BILLING",
-                serviceDeliveryAddressLine2: "BILLING",
-                serviceDeliveryApartmentNumber: "BILLING",
-                serviceDeliveryCity: "BILLING",
-                serviceDeliveryState: "BILLING",
-                serviceDeliveryCountry: "BILLING",
-                serviceDeliveryPostcode: "BILLING",
-            };
-        }
-        saveRegistrationData(updatedValues);
-        goToNextStep();
-    };
-
-    const onFinishFailedAddress2 = (errorInfo: any) => {
-        console.log("Failed:", errorInfo);
-    };
-
-    const onSelectSameDelivery = (e: any) => {
-        console.log(`checked = ${e.target.checked}`);
-        const checkValue = e.target.checked;
-        setaddressState(!checkValue);
-    };
-
-    return (
-        <Form
-            className={`${
-                isVisible ? "visible-registration-form" : "hidden-registration-form"
-                }`}
-            name={`registration-form-step-${currentProgressIndex}`}
-            form={form}
-            initialValues={{ remember: true }}
-            onFinish={onFinishAddress2}
-            onFinishFailed={onFinishFailedAddress2}
-        >
-
-            <Row style={{ justifyContent: "center", marginTop: "4%" }}>
-                <Checkbox style={{ fontSize: "16px" }} onChange={onSelectSameDelivery}>
-                    {"Same as Billing Address"}s
-                </Checkbox>
-            </Row>
-            {addressState && (
-                <Row justify="center">
-                    <div className="inputs">
-                        <>
-                            <Form.Item
-                                name="deliveryAddress"
-                                rules={[{ required: true, message: "Enter the Address" }]}
-                            >
-                                <CustomInputField type="text" placeholder="Address Line 1" />
-                            </Form.Item>
-
-                            <Form.Item name="deliveryAddress2">
-                                <CustomInputField type="text" placeholder="Address Line 2" />
-                            </Form.Item>
-
-                            <Form.Item name="deliveryApartment">
-                                <CustomInputField
-                                    type="text"
-                                    placeholder="Apartment, Suite etc."
-                                />
-                            </Form.Item>
-
-                            <Form.Item
-                                name="deliveryCity"
-                                rules={[{ required: true, message: "Enter the City" }]}
-                            >
-                                <CustomInputField type="text" placeholder="City" />
-                            </Form.Item>
-
-                            <Form.Item
-                                name="deliveryState"
-                                rules={[{ required: true, message: "Enter the State" }]}
-                            >
-                                <CustomInputField type="text" placeholder="Province or State" />
-                            </Form.Item>
-
-                            <Form.Item
-                                name="deliveryCountry"
-                                rules={[
-                                    { required: true, message: "Enter the Country or Region" },
-                                ]}
-                            >
-                                <CustomInputField type="text" placeholder="Country or Region" />
-                            </Form.Item>
-
-                            <Form.Item
-                                name="serviceDeliveryPostcode"
-                                rules={[{ required: true, message: "Enter the Postal Code" }]}
-                            >
-                                <CustomInputField type="text" placeholder="Postal Code" />
-                            </Form.Item>
-                        </>
-                    </div>
-                </Row>
-            )}
-
-            <Row justify="space-between">
-                {currentProgressIndex > 0 && (
-                    <Button
-                        className="progress-button keep-left"
-                        onClick={() => goToPreviousStep()}
-                    >
-                        {"PREVIOUS"}
-                    </Button>
-                )}
-
-                <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="progress-button keep-right"
-                >
-                    {currentProgressIndex === steps.length - 1 ? "SUBMIT" : "NEXT"}
-                </Button>
-            </Row>
-        </Form>
-    );
-};
 
 export const UploadImageForm: React.FC<RegistrationFormProps> = (
     props: RegistrationFormProps
 ) => {
     const {
         currentProgressIndex,
-        goToPreviousStep,
+        // goToPreviousStep,
         steps,
-        goToNextStep,
+        // goToNextStep,
         saveRegistrationData,
-        isVisible,
+        // isVisible,
     } = props;
 
     const [form] = Form.useForm();
@@ -470,7 +186,7 @@ export const UploadImageForm: React.FC<RegistrationFormProps> = (
         };
         console.log(updatedValues);
         saveRegistrationData(updatedValues);
-        goToNextStep();
+        // goToNextStep();
     };
 
     const onFinishFailedUpload = (errorInfo: any) => {
@@ -512,9 +228,9 @@ export const UploadImageForm: React.FC<RegistrationFormProps> = (
     };
     return (
         <Form
-            className={`${
-                isVisible ? "visible-registration-form" : "hidden-registration-form"
-                }`}
+            // className={`${
+            //     isVisible ? "visible-registration-form" : "hidden-registration-form"
+            //     }`}
             name={`registration-form-step-${currentProgressIndex}`}
             form={form}
             initialValues={{ remember: true }}
@@ -552,335 +268,14 @@ export const UploadImageForm: React.FC<RegistrationFormProps> = (
             </Row>
 
             <Row justify="space-between">
-                {currentProgressIndex > 0 && (
+                {/* {currentProgressIndex > 0 && (
                     <Button
                         className="progress-button keep-left"
                         onClick={() => goToPreviousStep()}
                     >
                         {"PREVIOUS"}
                     </Button>
-                )}
-
-                <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="progress-button keep-right"
-                >
-                    {currentProgressIndex === steps.length - 1 ? "SUBMIT" : "NEXT"}
-                </Button>
-            </Row>
-        </Form>
-    );
-};
-
-export const ConfirmationForm: React.FC<RegistrationFormProps> = (
-    props: RegistrationFormProps
-) => {
-    const {
-        currentProgressIndex,
-        goToPreviousStep,
-        steps,
-        saveRegistrationData,
-        isVisible,
-    } = props;
-
-    const [form] = Form.useForm();
-
-    const onFinishConfirmation = (values: any) => {
-        const updatedData = {
-            email: ~~values.email,
-            phoneCall: ~~values.phoneCall,
-            sms: ~~values.sms,
-            whatsapp: ~~values.whatsapp,
-        };
-        console.log("Success:", updatedData);
-        saveRegistrationData(updatedData);
-    };
-
-    const onFinishFailedConfirmation = (errorInfo: any) => {
-        console.log("Failed:", errorInfo);
-    };
-
-    return (
-        <Form
-            className={`${
-                isVisible ? "visible-registration-form" : "hidden-registration-form"
-                }`}
-            name={`registration-form-step-${currentProgressIndex}`}
-            form={form}
-            initialValues={{ remember: true }}
-            onFinish={onFinishConfirmation}
-            onFinishFailed={onFinishFailedConfirmation}
-        >
-            <div className="consent-text">
-                <div>Confirm your consent to contact over </div>
-            </div>
-            <Row justify="center">
-                <div className="inputs">
-                    <>
-                        <Form.Item name="whatsapp" valuePropName="checked">
-                            <CustomCheckbox icon={<WhatsappIcon />} name="Whatsapp" />
-                        </Form.Item>
-                        <Form.Item name="email" valuePropName="checked">
-                            <CustomCheckbox icon={<EmailIcon />} name="Email" />
-                        </Form.Item>
-                        <Form.Item name="phoneCall" valuePropName="checked">
-                            <CustomCheckbox icon={<PhoneIcon />} name="Phone" />
-                        </Form.Item>
-                        <Form.Item name="sms" valuePropName="checked">
-                            <CustomCheckbox icon={<PhoneIcon />} name="SMS" />
-                        </Form.Item>
-                    </>
-                </div>
-            </Row>
-
-            <Row justify="space-between">
-                {currentProgressIndex > 0 && (
-                    <Button
-                        className="progress-button keep-left"
-                        onClick={() => goToPreviousStep()}
-                    >
-                        {"PREVIOUS"}
-                    </Button>
-                )}
-
-                <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="progress-button keep-right"
-                >
-                    {currentProgressIndex === steps.length - 1 ? "SUBMIT" : "NEXT"}
-                </Button>
-            </Row>
-        </Form>
-    );
-};
-
-//#endregion
-
-//#region PROFESSIONAL_FORM
-
-export const InformationFormProfessional: React.FC<RegistrationFormProps> = (
-    props: RegistrationFormProps
-) => {
-    const {
-        currentProgressIndex,
-        goToPreviousStep,
-        goToNextStep,
-        steps,
-        saveRegistrationData,
-        isVisible,
-    } = props;
-
-    const [typeOptions, setTypeOptions] = useState([]);
-    const genderOptions = [
-        { id: "M", name: "Male" },
-        { id: "F", name: "Female" },
-        { id: "U", name: "Transgender" },
-        { id: "O", name: "Others" },
-    ];
-
-    // useEffect(() => {
-    //     const fetchTypeData = async () => {
-    //         console.log("fetching");
-    //         const profTypeData = await getprofRegtypes();
-    //         console.log("cleintdata ", profTypeData);
-    //         setTypeOptions(profTypeData.data);
-    //     };
-    //     fetchTypeData();
-    // }, []);
-
-    const [form] = Form.useForm();
-
-    const onSelected = (label: string, value: string) => {
-        console.log(value);
-        form.setFieldsValue({ [label]: value });
-        // console.log("GOT FROM FORM: ",form.getFieldValue(label))
-    };
-
-    const onFinishInformation = (values: any) => {
-        console.log("Success:", values);
-        let updatedValues = {
-            ...values,
-            doc1ExpiryDate:
-                values.doc1ExpiryDate && values.doc1ExpiryDate.format("YYYY-MM-DD"),
-            experience: parseInt(values.experience),
-        };
-        if (values.contactNumber === undefined || values.contactNumber === null || values.contactNumber === "") {
-            updatedValues = {
-                contactNumber: values.mobileNumber,
-                ...updatedValues,
-            }
-        }
-        saveRegistrationData(updatedValues);
-        goToNextStep();
-    };
-
-    const onFinishFailedInformation = (errorInfo: any) => {
-        console.log("Failed:", errorInfo);
-    };
-
-    // const disabledDate = (current: any) => {
-    //   return current && current.valueOf() > Date.now();
-    // };
-
-    const disablePastDate = (current: any) => {
-        return current && current.valueOf() <= Date.now();
-    };
-
-    return (
-        <Form
-            className={`${
-                isVisible ? "visible-registration-form" : "hidden-registration-form"
-                }`}
-            name={`registration-form-step-${currentProgressIndex}`}
-            form={form}
-            initialValues={{ remember: true }}
-            onFinish={onFinishInformation}
-            onFinishFailed={onFinishFailedInformation}
-        >
-            <Row justify="center">
-                <div className="inputs-first-row">
-                    <>
-                        {/* TYPE */}
-                        <Form.Item
-                            name="categoryId"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Select the Type of User",
-                                },
-                            ]}
-                        >
-                            <CustomSelect
-                                options={typeOptions}
-                                placeholder="Type"
-                                onChange={(value) => onSelected("type", value)}
-                                returnId
-                            />
-                        </Form.Item>
-                        {/* FIRST NAME */}
-                        <Form.Item
-                            name="firstName"
-                            rules={[{ required: true, message: "Enter the First Name" }]}
-                        >
-                            <CustomInputField type="text" placeholder="First Name" />
-                        </Form.Item>
-                        {/* LAST NAME */}
-                        <Form.Item
-                            name="lastName"
-                        >
-                            <CustomInputField type="text" placeholder="Last Name" />
-                        </Form.Item>
-
-                        {/* GENDER */}
-                        <Form.Item
-                            name="gender"
-                        >
-                            <CustomSelect
-                                options={genderOptions}
-                                placeholder="Gender"
-                                returnId
-                                onChange={(value) => onSelected("gender", value)}
-                            />
-                        </Form.Item>
-                        {/* Email ID */}
-                        <Form.Item
-                            name="emailId"
-                            rules={[
-                                { required: true, message: "Enter the E-mail id" },
-                            ]}
-                        >
-                            <CustomInputField type="email" placeholder="E-mail" pattern={EmailRegex} />
-                        </Form.Item>
-
-                        {/* Contact Number */}
-                        <Form.Item
-                            name="contactNumber"
-                        >
-                            <CustomInputField
-                                type="tel"
-                                placeholder="Contact Number"
-                                pattern={MobileRegex}
-                            />
-                        </Form.Item>
-
-                        {/* Mobile Number */}
-                        <Form.Item
-                            name="mobileNumber"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Enter the Mobile Number",
-                                },
-                            ]}
-                        >
-                            <CustomInputField
-                                type="tel"
-                                placeholder="Mobile Number"
-                                pattern={MobileRegex}
-                            />
-                        </Form.Item>
-
-                        {/*Years of Experience */}
-                        <Form.Item
-                            name="experience"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Enter the Experiemce",
-                                }
-                            ]}
-                        >
-                            <CustomInputField
-                                type="number"
-                                placeholder="Years of Experience"
-                                min="0"
-                            />
-                        </Form.Item>
-
-                        {/*NMC Reg No. */}
-                        <Form.Item name="doc1Number">
-                            <CustomInputField type="text" placeholder="Reg.No" />
-                        </Form.Item>
-
-                        {/*NMC Expiry data */}
-                        <Form.Item name="doc1ExpiryDate">
-                            <DatePicker
-                                className="custom-datepicker"
-                                placeholder="Reg. Expiry Date"
-                                disabledDate={disablePastDate}
-                            />
-                        </Form.Item>
-                    </>
-                </div>
-            </Row>
-            <Row justify="center">
-                <div className="inputs-second-row">
-                    {/* <> */}
-                    {/*Profile Summary */}
-                    <Form.Item name="profileSummary">
-                        {/* <CustomInputField type="textarea" placeholder="Profile Summary" /> */}
-                        <Input.TextArea
-                            placeholder="Profile Summary"
-                            // prefix={<div></div>}
-                            // style={{ borderRadius: "5px" }}
-                            className="custom-input-field"
-                        />
-                    </Form.Item>
-                    {/* </> */}
-                </div>
-            </Row>
-
-            <Row justify="space-between">
-                {currentProgressIndex > 0 && (
-                    <Button
-                        className="progress-button keep-left"
-                        onClick={() => goToPreviousStep()}
-                    >
-                        {"PREVIOUS"}
-                    </Button>
-                )}
+                )} */}
 
                 <Button
                     type="primary"
@@ -897,3 +292,5 @@ export const InformationFormProfessional: React.FC<RegistrationFormProps> = (
 
 
 //#endregion
+
+

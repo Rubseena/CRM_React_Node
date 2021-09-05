@@ -4,6 +4,7 @@ export const ROUTES = {
   VIEW_CUSTOMER:"/viewCustomer",
   MY_CALLS:"/myCalls",
   VIEW_CUST:"/viewCust",
+  VIEW_CUST_ID:"/viewCust/:id",
   CALL_REMINDER:"/callReminder",
 
   FORGOT_PASSWORD: "/forgotPassword",

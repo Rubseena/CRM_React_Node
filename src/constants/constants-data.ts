@@ -6,8 +6,11 @@ const endpointurl = `http://localhost:8090`;
 const dataConstants = {
     getOrdersUrl: `${endpointurl}/api/orders`,
     postOrdersUrl: `${endpointurl}/api/orders`,
+  // clientRegistrationUrl: `${endpointurl}/api/clientregister`,
+
     getClientDetailsUrl: `${endpointurl}/api/clientdetails`,
-    postClientDetailsUrl: `${endpointurl}/api/clientdetails`,
+    getClientDetailsByIdUrl: `${endpointurl}/api/clientdetails`,
+    postClientDetailsUrl: `${endpointurl}/api/register`,
 
 }
 // const endpointurl = `http://18.135.59.230:8080`;
