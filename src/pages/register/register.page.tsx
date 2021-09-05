@@ -97,10 +97,8 @@ const RegisterPage: React.FC = (props: any) => {
       {/* ROW 3: Forms  */}
 
       <RegistrationForm
-        currentProgressIndex={currentProgressIndex}
-        steps={steps}
-        saveRegistrationData={confirmRegistration}
-        setRegData={setRegistrationData}
+        saveRegistrationData={setRegistrationData}
+        // setRegData={setRegistrationData}
       />
 
 
