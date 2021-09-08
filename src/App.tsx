@@ -24,7 +24,8 @@ const App: React.FC = () => {
           <Route path={ROUTES.HOME} component={DashboardPage} exact />
           <Route path={ROUTES.REGISTER} component={RegisterPage} exact /> 
           <Route path={ROUTES.MY_CALLS} component={MyCallsPage} exact /> 
-          <Route path={ROUTES.VIEW_CUST} component={ViewCustPage} exact />   
+
+          <Route path={`${ROUTES.VIEW_CUST}/:Id`} component={ViewCustPage} exact />   
           <Route path={ROUTES.CALL_REMINDER} component={CallReminderPage} exact /> 
           <PrivateRoute
             path={ROUTES.REGISTER} component={RegisterPage} exact

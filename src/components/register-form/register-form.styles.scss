@@ -14,11 +14,12 @@
 .upload-image {
   width: 160px;
   height: 160px;
-  margin: 30px;
+  margin-left: 60px;
   .ant-upload.ant-upload-select-picture-card {
     width: 160px;
     height: 160px;
     border-radius: 93px;
+    margin-bottom: auto;
     overflow: hidden;
   }
 }

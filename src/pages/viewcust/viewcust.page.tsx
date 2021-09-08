@@ -1,118 +1,106 @@
-import { Card, Col, DatePicker, Divider, Row, Space, TimePicker } from "antd";
+import { Button, Card, Col, DatePicker, Divider, Row, Space, TimePicker } from "antd";
 import React, { useState, useEffect } from "react";
-import { Switch, Route, useRouteMatch, Link, useParams,useLocation } from "react-router-dom";
+import { Switch, Route, useRouteMatch, Link, useParams, useLocation } from "react-router-dom";
 import CustomSelect from "../../components/custom-select/custom-select.component";
 import { MailOutlined, PhoneOutlined, PlusOutlined } from '@ant-design/icons';
 import Avatar from "antd/lib/avatar/avatar";
-import { isConstructSignatureDeclaration } from "typescript";
 import { getCustListById } from "../../services/admin-services/dashboardServices";
+import { ROUTES } from "../../constants/routes";
 
 const { Meta } = Card;
-// function PickerWithType({ type, onChange }) {
-//     if (type === 'time') return <TimePicker onChange={onChange} />;
-//     if (type === 'date') return <DatePicker onChange={onChange} />;
-//     return <DatePicker picker={type} onChange={onChange} />;
-//   }
-
-interface ClientPageProps {
-    clientData?: any;
-  }
 interface ViewCustProps {
-    // state:any;
-    // title: string;
     CustData?: any;
+    // Id: string;
 }
-interface CurrentServicerequest {
+interface CurrentData{
     Id: number;
-    clientName: string;
-    EmailId: string;
-    // status: number;
-    // startDate: string;
-    // endDate: string;
-    // startTime: string;
-    // endTime: string;
-    // totalServiceUnits: number;
-    // serviceDays: number;
-    // profProfileImageUrl: string;
-    // profFirstName: string;
-    // profLastName: string;
-    // profContactNumber: string;
-    // profEmailId: string;
-  }
+    firstName: string;
+    lastName: string;
+    companyName: string;
+    address: string;
+    address2: string;
+    city: string;
+    province: string;
+    country: string;
+    postalCode: string;
+    emailId: string;
+    contactNumber: string;
+    mobileNumber: string;
+    image: string;
+}
+
 const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
-    const {  CustData } = props;
+    const { CustData } = props;
 
     const invoiceOptions = [
         { id: "Pursuing", name: "Pursuing" },
         { id: "Positive", name: "Positive" },
         { id: "Parked", name: "Parked" },
     ];
-    function onChange(date: any, dateString: any) {
-        console.log(date, dateString);
-    }
+  
     const [type, setType] = useState('time');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { Id }: { Id: string } = useParams();
-    const [currentData, setCurrentData] = useState<any>(null);
-    const [currentServicerequest, setCurrentServicerequest] = useState<
-    CurrentServicerequest
-  >();
-    //   const [serviceRequest, setServiceRequest] = useState<any>(null);
-
+    const [currentData, setCurrentData] = useState<CurrentData>();
     const fetchCustomerbyId = async (Id: number) => {
-        const Response = await getCustListById(Id);
-        console.log("View Cust Data ResponseData : ", Response.data);
-        if (Response.status == 200) {
-            setCurrentData(Response.data);
-            console.log("setting after current data : ",currentData);
+        try{
+            console.log("starting call");
+            const Response = await getCustListById(Id);
+            console.log("View Cust Data ResponseData : ", Response.data);
+            if (Response.status == 200) {
+                // this.items= Response.data;
+                setCurrentData(Response.data);
+            }
         }
+        catch(err){
+            console.log(err);
+        }      
     };
-    // const location = useLocation();
-    // const state = location.state
 
-    // const {state} = useLocation();
-    // console.log(state);
     useEffect(() => {
         try {
             const callAllAsyncFunctions = async () => {
                 setIsLoading(true);
                 await fetchCustomerbyId(parseInt(Id));
-                // setIsLoading(false);
+                setIsLoading(false);
             };
-            // callAllAsyncFunctions();
+            callAllAsyncFunctions();
         } catch (err) {
             console.log(err);
         }
-    }, [currentData]);
+    }, []);
 
 
 
-    const descr = `Philip & John`;
+    // const descr = `${currentData.firstName}`;
     return (
 
         <div className="mycalls-page-root site-card-border-less-wrapper" >
             <div style={{ margin: "80px 280px 150px 180px", backgroundColor: "#EAEDED", border: "1px solid black" }}  >
                 <div style={{ marginLeft: "25px" }}>
                     <p><b>Customer Profile</b></p>
-                    <p>{descr}</p>
+                    {/* <p>{`${currentData.firstName}`}</p> */}
                 </div>
                 <Divider plain></Divider>
                 <br></br>
                 <div style={{ marginLeft: "25px", width: "500px" }}>
-                    {/* <div className="image-container">
-                <img className="image" src="https://www.w3schools.com/images/lamp.jpg" />
-                </div> */}
                     <div>
                         <Row>
-                            <Col><Avatar src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?r=pg
-
-                            "></Avatar></Col>
-                            <Col style={{ marginLeft: "5px" }}>
+                            {/* <Col><Avatar src= {CustData.image ? <img src={`data:image/png;base64,${CustData.image}`}/>: ''}></Avatar></Col> */}
+                            <Col style={{ marginLeft: "5px" }} span={10}>
                                 {/* <p><b>{descr}</b></p>
                             <p>Care Home</p> */}
                                 <div className="image-right-box">
-                                    <div className="title"><b>{descr}</b></div>
+                                    {/* <div className="title"><b>{descr}</b></div> */}
                                     <div className="text">{`Care Home`}</div>
+                                </div>
+                                
+                            </Col>
+                            <Col span={6}>
+                            <div style={{ width: "20%" }}>
+                                    <Link to={ROUTES.MY_CALLS}>
+                                        <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"rgb(238, 161, 107)",color:"white", border: "1px solid rgb(238, 161, 107)", textAlign:"center"}}>{"+"}</Button>
+                                    </Link>
                                 </div>
                             </Col>
                         </Row>
@@ -122,7 +110,7 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
                     <Row>
                         <Col span={12}>
                             <p><PhoneOutlined rotate={90} />7530904446</p>
-                            {props.CustData.params.Id}
+                            {/* {props.CustData.params.Id} */}
                             {/* <p> {state.listData.EmailId}{""}</p> */}
                             {/* //<MailOutlined/>{` `} */}
                             <div title="Customer Profile">

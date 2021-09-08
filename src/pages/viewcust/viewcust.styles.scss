@@ -1,20 +1,37 @@
 
 
 .mycalls-page-root {
-    // width: 100%;
-    // overflow: hidden;
-    // align-items: center;
-    // display: flex;
-
-    // padding-top: 50px;
-    // padding-left: 50px;
-    // padding-bottom: 50px;
-    // margin-top: 50px;
-    // background: #05474f 0% 0% no-repeat padding-box;
- 
+    .dashboard-add-button {
+      border-radius: 50px ;
+      height: 100px ;
+      width: 100px ;
+      font-size: 2em ;
+      background: rgb(238, 161, 107);
+      border-color: rgb(238, 161, 107);
+  
+      span {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          text-align: center;
+      }
+  }
+  .btn {
+    height: 80px;
+    line-height: 80px;  
+    width: 80px;  
+    font-size: 2em;
+    font-weight: bold;
+    border-radius: 50%;
+    background-color: rgb(238, 161, 107);;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+  }
 .site-card-border-less-wrapper {
     padding: 30px;
-    background: #ececec;
+    // background: #ececec;
+   
     .image-container {
         height: 60px;
         width: 60px;
@@ -40,7 +57,7 @@
           }
         }
       }
-    
+     
 
   }
 }

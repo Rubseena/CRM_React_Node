@@ -13,69 +13,6 @@ const dataConstants = {
     postClientDetailsUrl: `${endpointurl}/api/register`,
 
 }
-// const endpointurl = `http://18.135.59.230:8080`;
-
-// const dataConstants = {
-//   clientRegistrationUrl: `${endpointurl}/csb/client/register`,
-//   professionalRegistrationUrl: `${endpointurl}/csb/prof/register`,
-//   clientRegTypesUrl: `${endpointurl}/csb/common/client-types`,
-//   profRegTypesUrl: `${endpointurl}/csb/common/prof-category-list`,
-//   clientProfielUpdateUrl: `${endpointurl}/csb/client/update`,
-//   professionalProfielUpdateUrl: `${endpointurl}/csb/prof/update`,
-
-//   clientLoginURL: `${endpointurl}/csb/common/authenticate`,
-//   resetPasswordURL: `${endpointurl}/csb/common/reset-password`,
-//   resetPasswordFirstLoginURL: `${endpointurl}/csb/common/change-password-on-reset`,
-//   resetPasswordValicationURL: `${endpointurl}/csb/common/reset-password=`, //{token}
-
-//   getUserInfoURL: `${endpointurl}/csb/common/user-info`,
-//   getNewServiceRequestProfUrl: `${endpointurl}/csb/prof/get-queued-sr`,
-//   acceptServiceRequestUrl: `${endpointurl}/csb/prof/mark-service-request`,
-//   nextServiceRequestUrl: `${endpointurl}/csb/prof/next-service-request`,
-//   getServicesOfDateUrl: `${endpointurl}/csb/prof/sr-by-date/`,
-//   getActiveServiceRequestsUrl: `${endpointurl}/csb/prof/active-timesheet-sr`,
-//   submitTimesheetsUrl: `${endpointurl}/csb/prof/timesheet-submission`,
-
-//   getCurrentServiceRequestStatusUrl: `${endpointurl}/csb/common/get-latest-sr-status/`,
-//   getClientServiceRequestsUrl: `${endpointurl}/csb/common/get-service-request/`,
-//   getAllClientServiceRequestsUrl: `${endpointurl}/csb/common/get-service-request/`,
-//   getAllocationDetailsServiceRequestUrl: `${endpointurl}/csb/common/get-sr-prof-details/`,
-//   postNewServiceRequestUrl: `${endpointurl}/csb/client/new-service-request`,
-
-//   getIncomeUrl: `${endpointurl}/csb/common/get-invoice/0`,
-//   getPendingPaymentUrl: `${endpointurl}/csb/common/get-invoice/0`,
-
-//   getRegistrationAllRequestUrl: `${endpointurl}/csb/admin/user-record/3`,
-//   getRegistrationClientRequestUrl: `${endpointurl}/csb/admin/client-record/3`,
-//   getRegistrationProfessionalRequestUrl: `${endpointurl}/csb/admin/prof-record/3`,
-//   getAllPendingRegistrationRequestUrl: `${endpointurl}/csb/admin/user-record/0`,
-//   postSubmitPaymentRefUrl: `${endpointurl}/csb/admin/submit-payment-ref`,
-//   putNewPendingPaymentRequestUrl: `${endpointurl}/csb/admin/invoice-payment-status-update/`,
-//   getUserCateogryWiseUsersUrl: `${endpointurl}/csb/admin/prof-record/`, // {cat_id}/{status}
-//   getBillingRateSRUrl: `${endpointurl}/csb/admin/get-sr-rate/`, // {sr_id}
-
-//   getInvoiceListUrl: `${endpointurl}/csb/common/get-invoice/`,
-//   getPaySlipListUrl: `${endpointurl}/csb/common/get-payslip/`,
-//   getAdminClientUrl: `${endpointurl}/csb/admin/user-list/C/`,
-//   getAdminProfUrl: `${endpointurl}/csb/admin/user-list/P/1`,
-//   getAdminServiceRequestUrl: `${endpointurl}/csb/common/get-service-request/`, //${status}
-//   getAdminInvoiceUrl: `${endpointurl}/csb/common/get-invoice/?paymentStatus=`, // {status}
-
-//   getAllServiceRequestsUrl: `${endpointurl}/csb/common/get-service-request/`,
-//   getServiceRequestDetailsUrl: `${endpointurl}/csb/common/get-service-request`,
-//   approveServiceRequestUrl: `${endpointurl}/csb/admin/update-sr-status/`,
-//   updateServiceRequestRateUrl: `${endpointurl}/csb/admin/update-sr-rate`,
-//   publishServiceRequestUrl: `${endpointurl}/csb/admin/publish-sr`,
-//   publishServiceRequesByCategorytUrl: `${endpointurl}/csb/admin/publish-sr-all`,
-//   approveRegistrationRequestUrl: `${endpointurl}/csb/admin/registration-approval`,
-//   getDefaultCurrencyUrl: `${endpointurl}/csb/admin/config-data/default.currency`,
-//   getAllProfesionalAllocationUrl: `${endpointurl}/csb/admin/sr-prof-list/`,
-//   confirmProfesionalAllocationUrl: `${endpointurl}/csb/admin/sr-prof-confirm/`,
-//   directProfesionalAllocationUrl: `${endpointurl}/csb/admin/sr-prof-allocate`,
-//   getTimesheetListUrl: `${endpointurl}/csb/admin/timesheet-list/`, // {status}
-//   postTimesheetApproveUrl: `${endpointurl}/csb/admin/timesheet-update`,
-//   getTotalRevenue:`${endpointurl}/csb/admin/get-revenue`,
-// };
 
 export default dataConstants;
 

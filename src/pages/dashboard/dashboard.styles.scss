@@ -241,6 +241,51 @@
         text-align: center;
     }
 }
+.dashboard-status-round-positive {
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+  padding: 0px;
+  background: rgb(64, 119, 78);
+  border-color: rgb(64, 119, 78);
+
+  span {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      text-align: center;
+  }
+}
+.dashboard-status-round-pursuing {
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+  padding: 0px;
+  background: rgb(238, 161, 107);
+  border-color: rgb(238, 161, 107);
+
+  span {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      text-align: center;
+  }
+}
+.dashboard-status-round-parked {
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+  padding: 0px;
+  background: rgb(189, 26, 15);
+  border-color: rgb(189, 26, 15);
+
+  span {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      text-align: center;
+  }
+}
       .list-container {
         height: 100%;
         width: auto;

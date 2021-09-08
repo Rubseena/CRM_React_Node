@@ -1,10 +1,11 @@
-import { Card, Col, DatePicker, Divider, Row, Space, TimePicker } from "antd";
+import { Button, Card, Col, DatePicker, Divider, Row, Space, TimePicker } from "antd";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, useRouteMatch, Link } from "react-router-dom";
 import CustomSelect from "../../components/custom-select/custom-select.component";
 import { MailOutlined,PhoneOutlined,PlusOutlined } from '@ant-design/icons';
 import Avatar from "antd/lib/avatar/avatar";
-
+import AcceptIcon from "../../assets/icons/check_1.svg";
+import RejectIcon from "../../assets/icons/remove.svg";
 const { Meta } = Card;
 // function PickerWithType({ type, onChange }) {
 //     if (type === 'time') return <TimePicker onChange={onChange} />;
@@ -24,7 +25,30 @@ const MyCallsPage: React.FC = () => {
       }
     const [type, setType] = useState('time');
       
-  
+    const renderAction = (item: any, record: any) => {
+        return (
+          <div className="button">
+            <div className="accept-button">
+              <img
+                src={AcceptIcon}
+                onClick={() => {
+                //   setSelectedProfessionalAllocation(record);
+                //   setModalAction("Accept");
+                }}
+              />
+            </div>
+            <div className="reject-button">
+              <img
+                src={RejectIcon}
+                onClick={() => {
+                //   setSelectedProfessionalAllocation(record);
+                //   setModalAction("Reject");
+                }}
+              />
+            </div>
+          </div>
+        );
+      };
      
     const descr = `Philip & John` ;
     return(
@@ -98,9 +122,19 @@ const MyCallsPage: React.FC = () => {
                         <Col><TimePicker></TimePicker></Col>
                     </Row>
                     </Col>
+                    
 
                 </Row>
-                
+                <br></br>
+                <Row align="middle" style={{paddingLeft:"250px"}}>
+                  <Col span={6}>
+                  <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"#1fc2c2",color:"white", border: "1px solid #1fc2c2", textAlign:"center"}}>{"+"}</Button>
+                </Col>
+                  <Col>
+                  <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"red",color:"white", border: "1px solid red", textAlign:"center"}}>{"-"}</Button>
+                 </Col>       
+                                   
+                </Row>
              
               
                 </div>
