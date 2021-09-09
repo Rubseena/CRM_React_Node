@@ -1,11 +1,12 @@
 import { Button, Card, Col, DatePicker, Divider, Row, Space, TimePicker } from "antd";
 import React, { useState, useEffect } from "react";
-import { Switch, Route, useRouteMatch, Link } from "react-router-dom";
+import { Switch, Route, useRouteMatch, Link, useParams } from "react-router-dom";
 import CustomSelect from "../../components/custom-select/custom-select.component";
 import { MailOutlined,PhoneOutlined,PlusOutlined } from '@ant-design/icons';
 import Avatar from "antd/lib/avatar/avatar";
 import AcceptIcon from "../../assets/icons/check_1.svg";
 import RejectIcon from "../../assets/icons/remove.svg";
+import { getCustListById } from "../../services/admin-services/dashboardServices";
 const { Meta } = Card;
 // function PickerWithType({ type, onChange }) {
 //     if (type === 'time') return <TimePicker onChange={onChange} />;
@@ -13,17 +14,66 @@ const { Meta } = Card;
 //     return <DatePicker picker={type} onChange={onChange} />;
 //   }
 
-
-const MyCallsPage: React.FC = () => {
+interface ViewCallProps {
+  CustData?: any;
+  // Id: string;
+}
+interface CurrentData{
+  Id: number;
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  address: string;
+  address2: string;
+  city: string;
+  province: string;
+  country: string;
+  postalCode: string;
+  emailId: string;
+  contactNumber: string;
+  mobileNumber: string;
+  image: string;
+}
+const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
     const invoiceOptions = [
         { id: "Pursuing", name: "Pursuing" },
         { id: "Positive", name: "Positive" },
         { id: "Parked", name: "Parked" },
     ];
+    const { Id }: { Id: string } = useParams();
+    const [currentData, setCurrentData] = useState<CurrentData>();
+    const fetchCustomerCallsbyId = async (Id: number) => {
+        try{
+            console.log("starting call");
+            const Response = await getCustListById(Id);
+            console.log("View Cust Data ResponseData : ", Response.data);
+            if (Response.status == 200) {
+                // this.items= Response.data;
+                setCurrentData(Response.data);
+            }
+        }
+        catch(err){
+            console.log(err);
+        }      
+    };
     function onChange(date: any, dateString: any) {
         console.log(date, dateString);
       }
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const [type, setType] = useState('time');
+    useEffect(() => {
+      try {
+          const callAllAsyncFunctions = async () => {
+              setIsLoading(true);
+              await fetchCustomerCallsbyId(parseInt(Id));
+              setIsLoading(false);
+          };
+          callAllAsyncFunctions();
+      } catch (err) {
+          console.log(err);
+      }
+  }, []);
       
     const renderAction = (item: any, record: any) => {
         return (
@@ -52,6 +102,8 @@ const MyCallsPage: React.FC = () => {
      
     const descr = `Philip & John` ;
     return(
+      <>
+      {currentData && (
 
         <div className="mycalls-page-root site-card-border-less-wrapper">
             <div style={{margin:"80px 280px 150px 180px",backgroundColor:"#EAEDED",border:"1px solid black"}} >
@@ -62,14 +114,9 @@ const MyCallsPage: React.FC = () => {
                 <Divider plain></Divider>
                 <br></br>
                 <div style={{marginLeft:"25px"}}>
-                {/* <div className="image-container">
-                <img className="image" src="https://www.w3schools.com/images/lamp.jpg" />
-                </div> */}
                     <div>
                         <Row>
-                        <Col><Avatar src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?r=pg
-
-"></Avatar></Col>
+                        <Col><Avatar src= {currentData.image ? <img src={`data:image/png;base64,${currentData.image}`}/>: ''}></Avatar></Col>
                             <Col style={{marginLeft:"5px"}}>
                             {/* <p><b>{descr}</b></p>
                             <p>Care Home</p> */}
@@ -80,7 +127,6 @@ const MyCallsPage: React.FC = () => {
                             </Col>
                         </Row>                    
                     </div>
-                
                 <Row>
                     <Col span={10}>
                     <p><PhoneOutlined  rotate={90}/>7530904446</p>
@@ -100,7 +146,6 @@ const MyCallsPage: React.FC = () => {
                     /></p>
                     </Row>
                     </Col>
-
                 </Row>
                 <Row>
                     <Col span={10}>
@@ -122,8 +167,6 @@ const MyCallsPage: React.FC = () => {
                         <Col><TimePicker></TimePicker></Col>
                     </Row>
                     </Col>
-                    
-
                 </Row>
                 <br></br>
                 <Row align="middle" style={{paddingLeft:"250px"}}>
@@ -132,26 +175,15 @@ const MyCallsPage: React.FC = () => {
                 </Col>
                   <Col>
                   <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"red",color:"white", border: "1px solid red", textAlign:"center"}}>{"-"}</Button>
-                 </Col>       
-                                   
-                </Row>
-             
+                 </Col>     
+                </Row>            
               
-                </div>
-                
+                </div>                
             </div>
-
-           {/* <Card bordered={true} style={{ width: 200 }}>
-            <Meta title="My Calls" description={descr} />
-            <p>Card content</p>
-            <p>Card content</p>
-            <p>Card content</p>
-            </Card> */}
-            {/* <Space direction="horizontal" style={{width: '100%', justifyContent: 'center'}}/>         */}
-
         </div>
-
-    );
+)}
+</>
+);
 
 }
 export default MyCallsPage;

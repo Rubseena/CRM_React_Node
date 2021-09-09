@@ -72,64 +72,71 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
 
 
 
-    // const descr = `${currentData.firstName}`;
+    
     return (
+        <>
+    {currentData && (
+        
+          <div className="mycalls-page-root site-card-border-less-wrapper" >
+          <div style={{ margin: "80px 280px 150px 180px", backgroundColor: "#EAEDED", border: "1px solid black" }}  >
+              <div style={{ marginLeft: "25px" }}>
+                  <p><b>Customer Profile</b></p>
+                  <p>{`${currentData.firstName}`} {`${currentData.lastName}`}</p>
+              </div>
+              <Divider plain></Divider>
+              <br></br>
+              <div style={{ marginLeft: "25px", width: "500px" }}>
+                  <div>
+                      <Row>
+                          <Col><Avatar src= {currentData.image ? <img src={`data:image/png;base64,${currentData.image}`}/>: ''}></Avatar></Col>
+                          <Col style={{ marginLeft: "5px" }} span={10}>
+                               <p><b>{currentData.firstName}</b></p>
+                          <p>Care Home</p> 
+                              <div className="image-right-box">
+                                  <div className="title"><b>{`${currentData.firstName}`} {`${currentData.lastName}`}</b></div>
+                                  <div className="text">{`Care Home`}</div>
+                              </div>
+                              
+                          </Col>
+                          <Col span={6}>
+                          <div style={{ width: "20%" }}>
+                                  <Link to={ROUTES.MY_CALLS}>
+                                      <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"rgb(238, 161, 107)",color:"white", border: "1px solid rgb(238, 161, 107)", textAlign:"center"}}>{"+"}</Button>
+                                  </Link>
+                              </div>
+                          </Col>
+                      </Row>
+                  </div>
+                  <br></br>
 
-        <div className="mycalls-page-root site-card-border-less-wrapper" >
-            <div style={{ margin: "80px 280px 150px 180px", backgroundColor: "#EAEDED", border: "1px solid black" }}  >
-                <div style={{ marginLeft: "25px" }}>
-                    <p><b>Customer Profile</b></p>
-                    {/* <p>{`${currentData.firstName}`}</p> */}
-                </div>
-                <Divider plain></Divider>
-                <br></br>
-                <div style={{ marginLeft: "25px", width: "500px" }}>
-                    <div>
-                        <Row>
-                            {/* <Col><Avatar src= {CustData.image ? <img src={`data:image/png;base64,${CustData.image}`}/>: ''}></Avatar></Col> */}
-                            <Col style={{ marginLeft: "5px" }} span={10}>
-                                {/* <p><b>{descr}</b></p>
-                            <p>Care Home</p> */}
-                                <div className="image-right-box">
-                                    {/* <div className="title"><b>{descr}</b></div> */}
-                                    <div className="text">{`Care Home`}</div>
-                                </div>
-                                
-                            </Col>
-                            <Col span={6}>
-                            <div style={{ width: "20%" }}>
-                                    <Link to={ROUTES.MY_CALLS}>
-                                        <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"rgb(238, 161, 107)",color:"white", border: "1px solid rgb(238, 161, 107)", textAlign:"center"}}>{"+"}</Button>
-                                    </Link>
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                    <br></br>
+                  <Row>
+                      <Col span={12}>
+                          <div style={{marginLeft:"25px"}}>
+                          <p><PhoneOutlined rotate={90} /> {`${currentData.mobileNumber}`}</p>
+                          <p><MailOutlined/> {`${currentData.emailId}`}</p>
+                          {/* //<MailOutlined/>{` `} */}
+                          </div>
+                         
+                          <div title="Customer Profile" style={{marginLeft:"25px"}}>
+                              <p > Address</p>
+                              <p style={{ margin: "0em" }}>{`${currentData.country}`}</p>
+                              <p style={{ margin: "0em" }}>{`${currentData.province}`}</p>
+                              <p style={{ margin: "0em" }}>{`${currentData.city}`}</p>
+                              <p style={{ margin: "0em" }}>{`${currentData.postalCode}`}</p>
+                              <p style={{ margin: "0em" }}>{`${currentData.mobileNumber}`}</p>
+                              <p style={{ margin: "0em" }}></p>
+                              <p style={{ margin: "0em" }}>{`${currentData.emailId}`}</p>
+                              {/*  */}
+                              <br></br>
+                          </div>
+                      </Col>
+                  </Row>
+              </div>
+          </div>
+      </div>
 
-                    <Row>
-                        <Col span={12}>
-                            <p><PhoneOutlined rotate={90} />7530904446</p>
-                            {/* {props.CustData.params.Id} */}
-                            {/* <p> {state.listData.EmailId}{""}</p> */}
-                            {/* //<MailOutlined/>{` `} */}
-                            <div title="Customer Profile">
-                                <p >Billing Address</p>
-                                <p style={{ margin: "0em" }}>6 Watkin Close</p>
-                                <p style={{ margin: "0em" }}>Wigan</p>
-                                <p style={{ margin: "0em" }}>2</p>
-                                <p style={{ margin: "0em" }}>Wigan</p>
-                                <p style={{ margin: "0em" }}>United Kingdom</p>
-                                <p style={{ margin: "0em" }}></p>
-                                <p style={{ margin: "0em" }}>WN36GP</p>
-                                <br></br>
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
-            </div>
-        </div>
-
+    )}
+      </>
     );
 
 }
