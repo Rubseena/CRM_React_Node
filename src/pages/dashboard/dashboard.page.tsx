@@ -362,7 +362,7 @@ const DashboardPage: React.FC = () => {
                                                             <Row><h5 style={{ color: "#797980" }}><b>{date}</b></h5> </Row>
                                                         </Col>
                                                         <Col span={3}>
-                                                            <Link to={ROUTES.MY_CALLS}>
+                                                            <Link to={`${ROUTES.MY_CALLS}/${item.Id}`}>
 
                                                                 <div><h4 style={{ color: "#1fc2c2" }}><b>{`>>`}</b></h4></div>
                                                             </Link>

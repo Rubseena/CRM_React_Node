@@ -100,7 +100,7 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
                           </Col>
                           <Col span={6}>
                           <div style={{ width: "20%" }}>
-                                  <Link to={ROUTES.MY_CALLS}>
+                                  <Link to={`${ROUTES.MY_CALLS}/${currentData.Id}`}>
                                       <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"rgb(238, 161, 107)",color:"white", border: "1px solid rgb(238, 161, 107)", textAlign:"center"}}>{"+"}</Button>
                                   </Link>
                               </div>
@@ -119,7 +119,7 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
                          
                           <div title="Customer Profile" style={{marginLeft:"25px"}}>
                               <p > Address</p>
-                              <p style={{ margin: "0em" }}>{`${currentData.country}`}</p>
+                              <p style={{ margin: "0em" }}>{`${currentData.country}sample`}</p>
                               <p style={{ margin: "0em" }}>{`${currentData.province}`}</p>
                               <p style={{ margin: "0em" }}>{`${currentData.city}`}</p>
                               <p style={{ margin: "0em" }}>{`${currentData.postalCode}`}</p>
@@ -135,7 +135,7 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
           </div>
       </div>
 
-    )}
+     )} 
       </>
     );
 

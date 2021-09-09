@@ -1,5 +1,5 @@
 import { Card, Col, DatePicker, Divider, Row, Space, TimePicker } from "antd";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Switch, Route, useRouteMatch, Link } from "react-router-dom";
 import CustomSelect from "../../components/custom-select/custom-select.component";
 import { MailOutlined,PhoneOutlined,PlusOutlined } from '@ant-design/icons';
@@ -27,29 +27,36 @@ const CallReminderPage: React.FC = () => {
     var today = new Date(),
     time = moment(today, "HH:mm:ss").format("h:mm A");
   
-     
+    const [count, setCount] = useState(0)
+    const [timeoutCount, setTimeoutCount] = useState(null)
+  
+    // Use a ref to access the current count value in
+    // an async callback.
+    const countRef = useRef(count)
+    countRef.current = count
+  
+    const getCountTimeout = () => {
+      setTimeout(() => {
+        // setTimeoutCount(countRef.current)
+      }, 2000)
+    }
     const descr = `Philip & John` ;
     return(
 
-        <div>
-            <div style={{margin:"80px 500px 150px 180px",backgroundColor:"#EAEDED",border:"1px solid black"}} >
+        <div style={{display:"revert",width:"100%"}}>
+            <div style={{ margin:"80px 500px 150px 180px",backgroundColor:"#EAEDED",border:"1px solid black"}} >
                 <div style={{marginLeft:"25px"}}>
-                <p><b>My Calls</b></p>
-                <p>{descr}</p>
+                <p><b>Call Reminder</b></p>
+                {/* <p>{descr}</p> */}
                 </div>
                 <Divider plain></Divider>
                 <br></br>
-                <div style={{marginLeft:"25px"}}>
-                {/* <div className="image-container">
-                <img className="image" src="https://www.w3schools.com/images/lamp.jpg" />
-                </div> */}
+                <div  style={{ marginLeft:"25px"}} >
                
                 <div>                        
                         <Row>
                         <Col><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar></Col>
                             <Col style={{marginLeft:"5px"}}>
-                            {/* <p><b>{descr}</b></p>
-                            <p>Care Home</p> */}
                              <div className="image-right-box">
                             <div className="title"><b>{descr}</b></div>
                             <div className="text">{`Care Home`}</div>
@@ -73,18 +80,20 @@ const CallReminderPage: React.FC = () => {
                 </Row>
 
                 </Col>
-                <Col>
-                    <h1 style={{color:"#ff0000"}}><b>{time}</b></h1>                                                   
-                   
+                <Col style={{display:"flex",alignItems:"center",alignContent:"center"}}>
+                    <h1 style={{color:"#ff0000",alignItems:"center"}}><b>{time}</b></h1>                                                 
                 </Col>
-                  
-                
-               
-                          
                 </div>                
             </div>
+            <div>
+            Count: <button onClick={() => setCount(count + 1)}>{count}</button>
+      <br />
+      <br />
+      <button onClick={getCountTimeout}>Get count with timeout</button>
+      <br />
+      <p>Count from timeout: {timeoutCount}</p>
+            </div>
         </div>
-
     );
 
 }

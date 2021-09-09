@@ -35,6 +35,10 @@ interface CurrentData{
   image: string;
 }
 const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
+  // const MyCallsPage: React.FC = () => {
+
+  // const { CustData } = props;
+
     const invoiceOptions = [
         { id: "Pursuing", name: "Pursuing" },
         { id: "Positive", name: "Positive" },
@@ -102,8 +106,8 @@ const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
      
     const descr = `Philip & John` ;
     return(
-      <>
-      {currentData && (
+      // <>
+      // {currentData && (
 
         <div className="mycalls-page-root site-card-border-less-wrapper">
             <div style={{margin:"80px 280px 150px 180px",backgroundColor:"#EAEDED",border:"1px solid black"}} >
@@ -116,7 +120,8 @@ const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
                 <div style={{marginLeft:"25px"}}>
                     <div>
                         <Row>
-                        <Col><Avatar src= {currentData.image ? <img src={`data:image/png;base64,${currentData.image}`}/>: ''}></Avatar></Col>
+                          <Col><Avatar></Avatar></Col>
+                        {/* <Col><Avatar src= {currentData.image ? <img src={`data:image/png;base64,${currentData.image}`}/>: ''}></Avatar></Col> */}
                             <Col style={{marginLeft:"5px"}}>
                             {/* <p><b>{descr}</b></p>
                             <p>Care Home</p> */}
@@ -134,7 +139,7 @@ const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
                     </Col>
                     <Col  style={{marginLeft:"80px"}}>
                     <Row>
-                    <p><b>Engagement Status</b>{` : `}</p>
+                    <p><b>Engagement Status</b>{` :    `}</p>
                     <p>{` `}<CustomSelect
                         options={invoiceOptions}
                         placeholder="Pursuing"
@@ -171,18 +176,18 @@ const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
                 <br></br>
                 <Row align="middle" style={{paddingLeft:"250px"}}>
                   <Col span={6}>
-                  <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"#1fc2c2",color:"white", border: "1px solid #1fc2c2", textAlign:"center"}}>{"+"}</Button>
+                  <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"#1fc2c2",color:"white", border: "1px solid #1fc2c2", textAlign:"center"}}>{"✓"}</Button>
                 </Col>
                   <Col>
-                  <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"red",color:"white", border: "1px solid red", textAlign:"center"}}>{"-"}</Button>
+                  <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"red",color:"white", border: "1px solid red", textAlign:"center"}}>{"×"}</Button>
                  </Col>     
                 </Row>            
-              
+              <br></br>
                 </div>                
             </div>
         </div>
-)}
-</>
+// )}
+// </>
 );
 
 }
