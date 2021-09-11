@@ -1,4 +1,4 @@
-import { Button, Card, Col, DatePicker, Divider, Row, Space, TimePicker } from "antd";
+import { Button, Card, Col, DatePicker, Divider, Input, Row, Space, TimePicker } from "antd";
 import React, { useState, useEffect } from "react";
 import { Switch, Route, useRouteMatch, Link, useParams } from "react-router-dom";
 import CustomSelect from "../../components/custom-select/custom-select.component";
@@ -6,7 +6,7 @@ import { MailOutlined,PhoneOutlined,PlusOutlined } from '@ant-design/icons';
 import Avatar from "antd/lib/avatar/avatar";
 import AcceptIcon from "../../assets/icons/check_1.svg";
 import RejectIcon from "../../assets/icons/remove.svg";
-import { getCustListById } from "../../services/admin-services/dashboardServices";
+import { getAPIList, getCustListById } from "../../services/admin-services/dashboardServices";
 const { Meta } = Card;
 // function PickerWithType({ type, onChange }) {
 //     if (type === 'time') return <TimePicker onChange={onChange} />;
@@ -34,6 +34,7 @@ interface CurrentData{
   mobileNumber: string;
   image: string;
 }
+const { TextArea } = Input;
 const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
   // const MyCallsPage: React.FC = () => {
 
@@ -44,6 +45,13 @@ const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
         { id: "Positive", name: "Positive" },
         { id: "Parked", name: "Parked" },
     ];
+    const clientData = [
+      { id: "Rubseena N U", name: "Rubseena N U" },
+      { id: "Ajith Kumar", name: "Ajith Kumar" },
+      { id: "Catherin Jacob", name: "Catherin Jacob" },
+      { id: "Jeni Doe", name: "Jeni Doe" },
+      { id: "Liya Marry", name: "Liya Marry" },
+  ];
     const { Id }: { Id: string } = useParams();
     const [currentData, setCurrentData] = useState<CurrentData>();
     const fetchCustomerCallsbyId = async (Id: number) => {
@@ -63,14 +71,25 @@ const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
     function onChange(date: any, dateString: any) {
         console.log(date, dateString);
       }
+      const onChangeTextArea = (e: { target: { value: any; }; }) => {
+        console.log('Change:', e.target.value);
+      };
+      
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [listData, setListData] = useState<any>();
+    const fetchList = async () => {
+      const Response = await getAPIList();
+      // console.log("dash - response", Response);
+    console.log("fetchlistforselectusers",Response);
 
+    };
     const [type, setType] = useState('time');
     useEffect(() => {
       try {
           const callAllAsyncFunctions = async () => {
               setIsLoading(true);
               await fetchCustomerCallsbyId(parseInt(Id));
+        await fetchList()
               setIsLoading(false);
           };
           callAllAsyncFunctions();
@@ -78,6 +97,7 @@ const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
           console.log(err);
       }
   }, []);
+
       
     const renderAction = (item: any, record: any) => {
         return (
@@ -137,10 +157,39 @@ const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
                     <p><PhoneOutlined  rotate={90}/>7530904446</p>
                     <p><MailOutlined/>{` `}philipandjohnconsultantltd@gmail.com</p>
                     </Col>
-                    <Col  style={{marginLeft:"80px"}}>
-                    <Row>
-                    <p><b>Engagement Status</b>{` :    `}</p>
-                    <p>{` `}<CustomSelect
+                    <Col  style={{ marginLeft:"80px", marginRight:"20px"}} span={9}>
+                      <Col span={9}>
+                      <div className="header-type-wrapper">
+                            <Row style={{padding:"0px"}} gutter={5}>
+                              <Col>
+                              <p><b>Client</b></p>                              
+                              </Col>
+                              <Col span={0.75}>
+                                :
+                                </Col>
+                              <Col>
+                              <CustomSelect
+                                options={clientData}
+                                placeholder="All"
+                                returnId
+                                className="header-type-select"
+                                onChange={async () => {
+                                    return await fetchList();
+                                }}
+                                // value={async () => {
+                                //   return await fetchList();
+                                // }}
+                            />
+                              </Col>
+                            </Row>
+                            <Row></Row>                     
+                  </div>
+                      </Col>
+                    <Row style={{padding:"0px"}} gutter={5}>                      
+                      <Col><p><b>Status</b></p></Col>
+                      <Col span={0.75}>:</Col>
+                      <Col>
+                      <CustomSelect
                         options={invoiceOptions}
                         placeholder="Pursuing"
                         returnId
@@ -148,21 +197,16 @@ const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
                         onChange={async (id) => {
                             //   await fetchInvoice(id);
                         }}
-                    /></p>
+                    />
+                      </Col>
                     </Row>
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={10}>
-                    <b>Call Updates</b><br></br>                    
-                        <Card style={{marginBottom:"10px"}}>
+                    <Col span={10}><b>Call Updates</b><br></br>
                             <div>
-                            <p>{`Call Updates Discussed about possible engagement with P&J.
-                    Customer is intrested to start the engagement in the month
-                    of September 2021.Need to send the contract document draft
-                    by 15 August 2021 and initiate a review meeting`}</p>
+                            <TextArea showCount rows={5} maxLength={100} onChange={onChangeTextArea}/>                       
                             </div>
-                        </Card>                   
                     </Col>
                     <Col style={{marginLeft:"80px"}}>
                     <b>{`  `}Next Call</b>
@@ -175,12 +219,8 @@ const MyCallsPage: React.FC<ViewCallProps> = (props:ViewCallProps) => {
                 </Row>
                 <br></br>
                 <Row align="middle" style={{paddingLeft:"250px"}}>
-                  <Col span={6}>
-                  <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"#1fc2c2",color:"white", border: "1px solid #1fc2c2", textAlign:"center"}}>{"✓"}</Button>
-                </Col>
-                  <Col>
-                  <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"red",color:"white", border: "1px solid red", textAlign:"center"}}>{"×"}</Button>
-                 </Col>     
+                  <Col span={6}><Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"#1fc2c2",color:"white", border: "1px solid #1fc2c2", textAlign:"center"}}>{"✓"}</Button></Col>
+                  <Col><Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"red",color:"white", border: "1px solid red", textAlign:"center"}}>{"×"}</Button></Col>     
                 </Row>            
               <br></br>
                 </div>                

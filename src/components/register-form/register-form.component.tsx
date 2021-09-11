@@ -4,6 +4,7 @@ import CustomInputField from "../../components/custom-input-field/custom-input-f
 import { Row, Button, Form, DatePicker, Upload, message, Checkbox, Input } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { convertBase64, displayBase64 } from "../../utils/helper";
+import { useHistory } from "react-router-dom";
 
 const EmailRegex = "[\\S]+[@][\\S]+[.][\\S]+";
 const MobileRegex = "[0-9]{10}";
@@ -33,7 +34,10 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = (
     } = props;
 
     const [form] = Form.useForm();
-
+    const history = useHistory();
+    const handleRoute = () =>{ 
+        history.push("/home");
+      }
     const onFinishInformation = (formValues: any) => {
         let updatedValues = {
             ...formValues,
@@ -171,13 +175,13 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = (
             </Row>
          
             <Row justify="space-between">
-                <Button
+                <Button 
                     type="primary"
                     htmlType="submit"
-                    className="progress-button keep-right"
-                >
+                    className="progress-button keep-right">
                     {"SUBMIT"}
                 </Button>
+                {/* onClick={handleRoute} */}
             </Row>
             <br></br>
         </Form>

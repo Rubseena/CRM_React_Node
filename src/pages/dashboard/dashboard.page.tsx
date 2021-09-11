@@ -162,9 +162,10 @@ const DashboardPage: React.FC = () => {
                                                     <div className="list-header">
                                                         <div className="header-text-wrapper">
                                                             {/* <Link to={{ pathname: ROUTES.VIEW_CUST }} style={{ color: "black", fontSize: "15px" }}> */}
-                                                                <Row style={{ flexFlow: "wrap-reverse" }}>
-                                                                    <Col> <UserOutlined /></Col>
-                                                                    <Col>{"View"}</Col>
+                                                                <Row style={{ flexFlow: "nowrap" }} className="user-add-block">
+                                                                {/* style={{ flexFlow: "wrap-reverse" }} */}
+                                                                    <Col > <UserOutlined /></Col>
+                                                                    <Col span={0}>{"View"}</Col>
                                                                 </Row>
                                                             {/* </Link> */}
 
@@ -266,6 +267,14 @@ const DashboardPage: React.FC = () => {
                                                         <Row style={{ flexFlow: "nowrap" }}>
                                                             <Col ><PhoneOutlined rotate={90} /></Col>
                                                             <Col>{"MyCalls"}</Col>
+                                                            <Col span={12}>
+                                                            <div style={{ width: "20%" }}>
+                                                                    {/* <Link to={`${ROUTES.MY_CALLS}/${currentData.Id}`}> */}
+                                                                    <Link to={ROUTES.MY_CALLS}>
+                                                                        <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"rgb(238, 161, 107)",color:"white", border: "1px solid rgb(238, 161, 107)", textAlign:"center"}}>{"+"}</Button>
+                                                                    </Link>
+                                                                </div>
+                                                            </Col>
                                                         </Row>
                                                         {/* </Link> */}
 

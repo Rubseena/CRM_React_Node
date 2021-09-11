@@ -23,7 +23,7 @@ const App: React.FC = () => {
         <Switch>  
           <Route path={ROUTES.HOME} component={DashboardPage} exact />
           <Route path={ROUTES.REGISTER} component={RegisterPage} exact /> 
-          {/* <Route path={ROUTES.MY_CALLS} component={MyCallsPage} exact />  */}
+          <Route path={ROUTES.MY_CALLS} component={MyCallsPage} exact /> 
           <Route path={`${ROUTES.MY_CALLS}/:Id`} component={MyCallsPage} exact />   
 
           <Route path={`${ROUTES.VIEW_CUST}/:Id`} component={ViewCustPage} exact />   

@@ -42,6 +42,7 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { Id }: { Id: string } = useParams();
     const [currentData, setCurrentData] = useState<CurrentData>();
+
     const fetchCustomerbyId = async (Id: number) => {
         try{
             console.log("starting call");
@@ -49,7 +50,10 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
             console.log("View Cust Data ResponseData : ", Response.data);
             if (Response.status == 200) {
                 // this.items= Response.data;
-                setCurrentData(Response.data);
+                if(Response.data.length > 0)
+                {
+                setCurrentData(Response.data[0]);
+                }
             }
         }
         catch(err){
@@ -75,6 +79,7 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
     
     return (
         <>
+        {console.log(currentData)}
     {currentData && (
         
           <div className="mycalls-page-root site-card-border-less-wrapper" >
