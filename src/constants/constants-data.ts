@@ -16,6 +16,7 @@ const dataConstants = {
     postCallDetailsUrl: `${endpointurl}/api/mycalls`,
     putCallDetailsUrl: `${endpointurl}/api/mycalls`,
 
+    
 
 }
 
@@ -57,93 +58,9 @@ export const textResources = {
   exceptionMessage: `Something went wrong. Please contact your administrator.`,
 };
 
-export const ServiceRequestStatus = {
-  Initiated: 0,
-  Approved: 1,
-  Published: 2,
-  Allocated: 3,
-  Rejected: 4,
-  OnHold: 5,
-  Completed: 6,
-  Cancelled: 7,
-};
-
-export const ServiceRequestStatusCode = {
-  0: "Initiated",
-  1: "Approved",
-  2: "Published",
-  3: "Allocated",
-  4: "Rejected",
-  5: "OnHold",
-  6: "Completed",
-  7: "Cancelled",
-};
-
-export const genderOptions = [
-  { id: "M", name: "Male" },
-  { id: "F", name: "Female" },
-  { id: "U", name: "Transgender" },
-  { id: "O", name: "Others" },
+export const callStatus = [
+  { id: "0", name: "New" },
+  { id: "1", name: "Pursuing" },
+  { id: "2", name: "Positive" },
+  { id: "3", name: "Parked" },
 ];
-
-export const PendingRequestStatus = {
-  Paid: 0,
-  NotPaid: 1,
-};
-
-export const PendingRequestStatusCode = {
-  0: "Paid",
-  1: "Not Paid",
-};
-
-export const RegistrationRequestStatus = {
-  Pending: "PENDING",
-  Accepted: "ACCEPTED",
-  Rejected: "REJECTED",
-};
-
-export const RegistrationRequestStatusCode = {
-  0: "Pending",
-  1: "Accepted",
-};
-
-export const RegistrationApproveStatusCode = {
-  Accept: 1,
-  Reject: 2,
-};
-
-export const UserStatus = {
-  Inactive: 0,
-  Active: 1,
-  All: 2,
-};
-export const ProfessionalAllocationStatusCode = {
-  Initiated: 0,
-  Accepted: 1,
-  Rejected: 2,
-};
-
-export const ProfessionalAllocationActionStatusCode = {
-  Accepted: 1,
-  Rejected: 2,
-};
-
-export const ManualAllocationStatus = {
-  Allocate: 1,
-  Reallocate: 0,
-};
-
-export const TimesheetStatus = {
-  Raised: 0,
-  Approved: 1,
-  Rejected: 2,
-  Correction: 3,
-  Processing: 4,
-  All: "all",
-};
-
-export const PaymentStatus = {
-  NotPaid: 0,
-  Paid: 1,
-  All: 2,
-};
