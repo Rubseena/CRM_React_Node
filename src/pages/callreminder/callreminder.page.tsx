@@ -1,10 +1,11 @@
-import { Card, Col, DatePicker, Divider, Row, Space, TimePicker } from "antd";
+import { Card, Col, DatePicker, Divider, Row, Space, TimePicker ,message} from "antd";
 import React, { useState, useEffect, useRef } from "react";
 import { Switch, Route, useRouteMatch, Link } from "react-router-dom";
 import CustomSelect from "../../components/custom-select/custom-select.component";
 import { MailOutlined,PhoneOutlined,PlusOutlined } from '@ant-design/icons';
 import Avatar from "antd/lib/avatar/avatar";
 import moment from "moment";
+import { getCallList } from "../../services/admin-services/dashboardServices";
 
 const { Meta } = Card;
 // function PickerWithType({ type, onChange }) {
@@ -29,7 +30,45 @@ const CallReminderPage: React.FC = () => {
   
     const [count, setCount] = useState(0)
     const [timeoutCount, setTimeoutCount] = useState(null)
-  
+    let [values, setValues] = useState({
+        categoriesList: "",
+        error: "false",
+      });
+    let { categoriesList, error } = values;
+    const fetchCallReminder = async () => {
+        try{
+            console.log("starting call");
+            const Response = await getCallList();
+            console.log("View Cust Data ResponseData : ", Response.data);
+            if (Response.status == 200) {
+                // this.items= Response.data;
+                if(Response.data.length > 0)
+                {
+                    setValues(Response.data[0]);
+                }
+            }
+        }
+        catch(err){
+            console.log(err);
+        }      
+    };
+    const loadCallReminder = () => {
+        fetchCallReminder();
+        
+      };
+     
+      useEffect(() => {
+        if(!categoriesList && !error) {
+          let timerFunc = setTimeout(() => {
+            setValues({
+              ...values,
+              error: "Error fetching reminder list... try after some time !",
+            });
+          }, 10000);
+    
+          return () => clearTimeout(timerFunc);
+      }
+    }, [!categoriesList, !error]);
     // Use a ref to access the current count value in
     // an async callback.
     const countRef = useRef(count)
@@ -86,7 +125,7 @@ const CallReminderPage: React.FC = () => {
                 </div>                
             </div>
             <div>
-            Count: <button onClick={() => setCount(count + 1)}>{count}</button>
+            Reminder: <button onClick={() => {setValues(values)}}>{values}</button>
       <br />
       <br />
       <button onClick={getCountTimeout}>Get count with timeout</button>
@@ -98,3 +137,5 @@ const CallReminderPage: React.FC = () => {
 
 }
 export default CallReminderPage;
+
+
