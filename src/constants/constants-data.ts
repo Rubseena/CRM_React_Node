@@ -11,6 +11,11 @@ const dataConstants = {
     getClientDetailsUrl: `${endpointurl}/api/clientdetails`,
     getClientDetailsByIdUrl: `${endpointurl}/api/clientdetails`,
     postClientDetailsUrl: `${endpointurl}/api/register`,
+    getCallDetailsUrl: `${endpointurl}/api/mycalls`,
+    getCallDetailsByIdUrl: `${endpointurl}/api/mycalls`,
+    postCallDetailsUrl: `${endpointurl}/api/mycalls`,
+    putCallDetailsUrl: `${endpointurl}/api/mycalls`,
+
 
 }
 

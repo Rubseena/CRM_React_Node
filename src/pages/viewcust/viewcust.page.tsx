@@ -80,8 +80,7 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
     return (
         <>
         {console.log(currentData)}
-    {currentData && (
-        
+    {currentData && (        
           <div className="mycalls-page-root site-card-border-less-wrapper" >
           <div style={{ margin: "80px 280px 150px 180px", backgroundColor: "#EAEDED", border: "1px solid black" }}  >
               <div style={{ marginLeft: "25px" }}>
@@ -95,21 +94,20 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
                       <Row>
                           <Col><Avatar src= {currentData.image ? <img src={`data:image/png;base64,${currentData.image}`}/>: ''}></Avatar></Col>
                           <Col style={{ marginLeft: "5px" }} span={10}>
-                               <p><b>{currentData.firstName}</b></p>
-                          <p>Care Home</p> 
-                              <div className="image-right-box">
+                               <p><b>{`${currentData.firstName}`} {`${currentData.lastName}`}</b></p>
+                                <p>{currentData.companyName}</p> 
+                              {/* <div className="image-right-box">
                                   <div className="title"><b>{`${currentData.firstName}`} {`${currentData.lastName}`}</b></div>
-                                  <div className="text">{`Care Home`}</div>
-                              </div>
-                              
+                                  <div className="text">{currentData.companyName}</div>
+                              </div>                               */}
                           </Col>
-                          <Col span={6}>
+                          {/* <Col span={6}>
                           <div style={{ width: "20%" }}>
                                   <Link to={`${ROUTES.MY_CALLS}/${currentData.Id}`}>
                                       <Button style={{height:"40px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"rgb(238, 161, 107)",color:"white", border: "1px solid rgb(238, 161, 107)", textAlign:"center"}}>{"+"}</Button>
                                   </Link>
                               </div>
-                          </Col>
+                          </Col> */}
                       </Row>
                   </div>
                   <br></br>
@@ -124,13 +122,13 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
                          
                           <div title="Customer Profile" style={{marginLeft:"25px"}}>
                               <p > Address</p>
-                              <p style={{ margin: "0em" }}>{`${currentData.country}sample`}</p>
+                              <p style={{ margin: "0em" }}>{`${currentData.country}`}</p>
                               <p style={{ margin: "0em" }}>{`${currentData.province}`}</p>
                               <p style={{ margin: "0em" }}>{`${currentData.city}`}</p>
                               <p style={{ margin: "0em" }}>{`${currentData.postalCode}`}</p>
-                              <p style={{ margin: "0em" }}>{`${currentData.mobileNumber}`}</p>
+                              {/* <p style={{ margin: "0em" }}>{`${currentData.mobileNumber}`}</p> */}
                               <p style={{ margin: "0em" }}></p>
-                              <p style={{ margin: "0em" }}>{`${currentData.emailId}`}</p>
+                              {/* <p style={{ margin: "0em" }}>{`${currentData.emailId}`}</p> */}
                               {/*  */}
                               <br></br>
                           </div>

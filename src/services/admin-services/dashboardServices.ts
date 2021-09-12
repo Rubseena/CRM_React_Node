@@ -15,4 +15,15 @@ export const getCustListById = async(Id:number)=>{
 export const postClientRegisterUser = async (body: any) => {
   return axios.post(dataConstants.postClientDetailsUrl, body);
 };
-
+export const getCallList = async()=>{
+  return axios.get(dataConstants.getCallDetailsUrl);
+};
+export const getCallListById = async(Id:number)=>{
+  return axios.get(dataConstants.getCallDetailsByIdUrl + "/" + Id);
+};
+export const postCallDetails = async (body: any) => {
+  return axios.post(dataConstants.postCallDetailsUrl, body);
+};
+export const putCallDetails = async (id: string,body:any) => {
+  return axios.put(dataConstants.putCallDetailsUrl + id );
+}

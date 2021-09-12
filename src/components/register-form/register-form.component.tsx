@@ -44,6 +44,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = (
             image: fileImage,
         };
         saveRegistrationData(updatedValues);
+        setMessage("Registered successfully!");
     };
 
     const onFinishFailedInformation = (errorInfo: any) => {
@@ -52,7 +53,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = (
     const [loading, setLoading] = useState(false);
     const [fileImage, setfileImage] = useState("");
     const [imageUrl, setImageUrl] = useState("");
-
+    const [message, setMessage] = useState<string>("");
     const onFinishUpload = () => {
         const updatedValues = {
             image: fileImage,
@@ -107,6 +108,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = (
             onFinish={onFinishInformation}
             onFinishFailed={onFinishFailedInformation}
         >
+            <p style={{color:"#1fc2c2",textAlign:"center"}}><b>{message}</b></p>
                <Row justify="start" style={{ marginBottom: 0}}>
                  <div className="upload-image">
                     <>
