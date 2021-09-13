@@ -59,7 +59,7 @@ export const textResources = {
 };
 
 export const callStatus = [
-  { id: "0", name: "New" },
+  // { id: "0", name: "New" },
   { id: "1", name: "Pursuing" },
   { id: "2", name: "Positive" },
   { id: "3", name: "Parked" },

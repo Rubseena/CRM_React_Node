@@ -8,14 +8,10 @@ import whatsapp from "../../assets/icons/whatsapp.svg";
 import "./dashboard.styles.scss";
 import CustomSelect from "../../components/custom-select/custom-select.component";
 import moment from "moment";
-// import { Icon } from 'antd';
 import { UserOutlined, PhoneOutlined, PlusOutlined } from '@ant-design/icons';
 import {
     getAPIList,
-    // getClientUserList,
-    // getInvoiceList,
-    // getServiceRequestList,
-    // getAllPendingRegistrationRequests,
+    getCallList
 } from "../../services/admin-services/dashboardServices";
 const DashboardPage: React.FC = () => {
 
@@ -33,7 +29,11 @@ const DashboardPage: React.FC = () => {
         { id: "Parked", name: "Parked" },
     ];
     const [listLoadedData, setListLoadedData] = useState<any>();
+    const [callListData, setcallListData] = useState<any>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [listData, setListData] = useState<any>();
+    const [listcallData, setListCallData] = useState<any>();
+
     const [loadingList, setLoadingList] = useState<boolean>(false);
     const [isListViewMore, setIsListViewMore] = useState<boolean>(false);
     const [listChuckCount, setListChuckCount] = useState<number>(1);
@@ -77,45 +77,65 @@ const DashboardPage: React.FC = () => {
 
     const { Step } = Steps;
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    const fetchCallsList = async () => {
+        const Response = await getCallList();
+        console.log("call - response", Response);
+        if (Response.status === 200) {
+            viewMore(
+                Response.data.sort((Id1: any, Id2: any) => {
+                    if (Id1.Id < Id2.Id) {
+                        return 1;
+                    }
+                    if (Id1.Id > Id2.Id) {
+                        return -1;
+                    }
+                    return 0;
+                }),
+                setcallListData,
+                setcallListData,
+                setIsListViewMore,
+                setListChuckCount
+            );
+        }
+    }
     const fetchList = async () => {
         const Response = await getAPIList();
         console.log("dash - response", Response);
         if (Response.status === 200) {
             viewMore(
-                Response.data.sort((Invoice1: any, Invoice2: any) => {
-                    if (Invoice1.invoiceId < Invoice2.invoiceId) {
+                Response.data.sort((Id1: any, Id2: any) => {
+                    if (Id1.Id < Id2.Id) {
                         return 1;
                     }
-                    if (Invoice1.invoiceId > Invoice2.invoiceId) {
+                    if (Id1.Id > Id2.Id) {
                         return -1;
                     }
                     return 0;
                 }),
-                setListData,
+                setcallListData,
                 setListLoadedData,
                 setIsListViewMore,
                 setListChuckCount
             );
         }
     };
-
+// if(callListData.)
     useEffect(() => {
         const fetchInitialData = async () => {
             setIsLoading(true);
-
-
-            // Load All Invoices
-            //   setLoadingList(true);
-            //   await fetchInvoice("All");
-            //   setLoadingList(false);
-            await fetchList()
-            // console.log("My Id" ,listData.Id);
-
+            await fetchList();
             setIsLoading(false);
         };
         fetchInitialData();
+    }, []);
+    useEffect(() => {
+        const fetchCallData = async () => {
+            setIsLoading(true);
+            await fetchCallsList();
+            setIsLoading(false);
+        };
+        fetchCallData();
     }, []);
     //   const history = useHistory();
     // history.push(`/viewCust:${listData.Id}`)
@@ -153,7 +173,7 @@ const DashboardPage: React.FC = () => {
                                         </Col>
                                     </Row>
                                     <br></br>
-                                   
+
 
                                     <Row>
                                         <Col span={16}>
@@ -161,9 +181,9 @@ const DashboardPage: React.FC = () => {
                                                 <div className="list-header-wrapper ant-list-header">
                                                     <div className="list-header">
                                                         <div className="header-text-wrapper">
-                                                                <Row style={{ flexFlow: "wrap-reverse" }} className="user-add-block">
-                                                                    <Col > <UserOutlined />{"    View"}</Col>
-                                                                </Row>
+                                                            <Row style={{ flexFlow: "wrap-reverse" }} className="user-add-block">
+                                                                <Col > <UserOutlined />{"    View"}</Col>
+                                                            </Row>
 
                                                         </div>
                                                         {/* <div className="header-count-wrapper">
@@ -220,13 +240,11 @@ const DashboardPage: React.FC = () => {
                                                     header={""}
                                                     itemLayout="horizontal"
                                                     dataSource={listLoadedData}
-                                                    // dataSource={data1}
-
                                                     renderItem={(item: any) => (
                                                         <List.Item extra>
                                                             <List.Item.Meta
                                                                 avatar={
-                                                                    <Avatar src=  {item.image ? <img src={`data:image/png;base64,${item.image}`}/>: ''}
+                                                                    <Avatar src={item.image ? <img src={`data:image/png;base64,${item.image}`} /> : ''}
                                                                         shape="circle" />
                                                                 }
                                                                 title={`${item.firstName} ` + `${item.lastName} `}
@@ -236,11 +254,6 @@ const DashboardPage: React.FC = () => {
                                                             //     new Date(item.generatedOn)
                                                             // ).format("DD/MM/YYYY")}
                                                             />
-                                                            {/* <List.Item.Meta
-                                                    avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                                    title={<a href="https://ant.design">{item.title}</a>}
-                                                    description="Ernakulam"
-                                                    /> */}
                                                             <Link to={`${ROUTES.VIEW_CUST}/${item.Id}`}>
                                                                 <div>
                                                                     <h4 style={{ color: "#1fc2c2" }}><b>{`>>`}</b></h4>
@@ -259,21 +272,21 @@ const DashboardPage: React.FC = () => {
                                         <div className="list-header-wrapper ant-list-header">
                                             <div className="list-header">
                                                 <div className="header-text-wrapper" style={{ width: "50%" }}>
-                                                        <Row style={{ flexFlow: "nowrap" }}>
-                                                            <Col span={24}><PhoneOutlined rotate={90} />{"       MyCalls"}</Col>
-                                                            <Col></Col>
-                                                            <Col span={12}>
-                                                                    {/* <Link to={`${ROUTES.MY_CALLS}/${currentData.Id}`}> */}
-                                                                    <Col>
-                                                                    <Link to={ROUTES.MY_CALLS}>
-                                                                        <Button className="dashboard-status-round-pursuing" style={{height:"37px",width:"40px",cursor:"pointer", fontSize:"1em",fontWeight:"bold",borderRadius:"50%",backgroundColor:"rgb(238, 161, 107)",color:"white", border: "1px solid rgb(238, 161, 107)", textAlign:"center"}}>{"+"}</Button>
-                                                                    </Link>
-                                                                    </Col>
+                                                    <Row style={{ flexFlow: "nowrap" }}>
+                                                        <Col span={24}><PhoneOutlined rotate={90} />{"       MyCalls"}</Col>
+                                                        <Col></Col>
+                                                        <Col span={12}>
+                                                            {/* <Link to={`${ROUTES.MY_CALLS}/${currentData.Id}`}> */}
+                                                            <Col>
+                                                                <Link to={ROUTES.MY_CALLS}>
+                                                                    <Button className="dashboard-status-round-pursuing" style={{ height: "37px", width: "40px", cursor: "pointer", fontSize: "1em", fontWeight: "bold", borderRadius: "50%", backgroundColor: "rgb(238, 161, 107)", color: "white", border: "1px solid rgb(238, 161, 107)", textAlign: "center" }}>{"+"}</Button>
+                                                                </Link>
                                                             </Col>
-                                                        </Row>
+                                                        </Col>
+                                                    </Row>
 
                                                 </div >
-                              
+
 
                                                 {/* <div>
                                        <PlusOutlined className="button reject-button"/>
@@ -315,8 +328,8 @@ const DashboardPage: React.FC = () => {
                                                         <p
                                                             onClick={() => {
                                                                 loadViewMore(
-                                                                    listData,
-                                                                    setListLoadedData,
+                                                                    listcallData,
+                                                                    setcallListData,
                                                                     setIsListViewMore,
                                                                     listChuckCount,
                                                                     setListChuckCount
@@ -333,39 +346,37 @@ const DashboardPage: React.FC = () => {
                                             className="list"
                                             header={""}
                                             itemLayout="horizontal"
-                                            dataSource={listLoadedData}
-                                            // dataSource={data2}
-                                            renderItem={(item: any) => (
+                                            dataSource={callListData}
+                                            renderItem={(callitem: any) => (
                                                 <List.Item extra>
 
-                                                    {/* <List.Item.Meta
-                                                   title={`${item.invoiceId} `}
-                                                   description={moment(
-                                                       new Date(item.generatedOn)
-                                                   ).format("DD/MM/YYYY")}
-                                               /> */}
                                                     <List.Item.Meta
                                                         avatar={
-                                                            <Avatar src= {item.image ? <img src={`data:image/png;base64,${item.image}`}/>: ''}
+                                                            <Avatar src={callitem.image ? <img src={`data:image/png;base64,${callitem.image}`} /> : ''}
                                                                 shape="circle"
                                                             />
                                                         }
 
-                                                        title={`${item.firstName} ` + `${item.lastName} `}
-                                                        description={`${item.city}`}
+                                                        title={`${callitem.name}  `}
+                                                        description={`${callitem.city}`}
                                                     />
                                                     <Row>
                                                         <Col span={12}>
-                                                        <div className="dashboard-status-round-positive" style={{marginRight:"20px"}}></div>
+                                                            
+                                                            <div className="dashboard-status-round-positive" style={{ marginRight: "20px" }}></div>
                                                         </Col>
                                                     </Row>
                                                     <Row>
                                                         <Col span={20}>
-                                                            <Row><h3 style={{ color: "#ff0000" }}><b>{time}</b></h3></Row>
-                                                            <Row><h5 style={{ color: "#797980" }}><b>{date}</b></h5> </Row>
+                                                            <Row><h3 style={{ color: "#ff0000" }}><b>{moment(
+                                                                new Date(callitem.NextCallDateTime)
+                                                            ).format('HH:mm')}</b></h3></Row>
+                                                            <Row><h5 style={{ color: "#797980" }}><b>{moment(
+                                                                new Date(callitem.NextCallDateTime)
+                                                            ).format("YYYY-MM-DD")}</b></h5> </Row>
                                                         </Col>
                                                         <Col span={3}>
-                                                            <Link to={`${ROUTES.MY_CALLS}/${item.Id}`}>
+                                                            <Link to={`${ROUTES.MY_CALLS}/${callitem.Id}`}>
 
                                                                 <div><h4 style={{ color: "#1fc2c2" }}><b>{`>>`}</b></h4></div>
                                                             </Link>
