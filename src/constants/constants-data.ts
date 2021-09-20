@@ -13,9 +13,9 @@ const dataConstants = {
     postClientDetailsUrl: `${endpointurl}/api/register`,
     getCallDetailsUrl: `${endpointurl}/api/mycalls`,
     getCallDetailsByIdUrl: `${endpointurl}/api/mycalls`,
+    getCallDetailsByIdNameList: `${endpointurl}/api/updatecalls`,
     postCallDetailsUrl: `${endpointurl}/api/mycalls`,
     putCallDetailsUrl: `${endpointurl}/api/mycalls`,
-
     
 
 }
@@ -60,7 +60,7 @@ export const textResources = {
 
 export const callStatus = [
   // { id: "0", name: "New" },
-  { id: "1", name: "Pursuing" },
-  { id: "2", name: "Positive" },
-  { id: "3", name: "Parked" },
+  { id: "1", name: "Pursuing" },//orange
+  { id: "2", name: "Positive" },//green
+  { id: "3", name: "Parked" },//red
 ];

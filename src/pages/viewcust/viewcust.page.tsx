@@ -83,9 +83,9 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
     {currentData && (        
           <div className="mycalls-page-root site-card-border-less-wrapper" >
           <div style={{ margin: "80px 280px 150px 180px", backgroundColor: "#EAEDED", border: "1px solid black" }}  >
-              <div style={{ marginLeft: "25px" }}>
+              <div style={{ marginLeft: "25px" , marginTop:"10px"}}>
                   <p><b>Customer Profile</b></p>
-                  <p>{`${currentData.firstName}`} {`${currentData.lastName}`}</p>
+                  {/* <p>{`${currentData.firstName}`} {`${currentData.lastName}`}</p> */}
               </div>
               <Divider plain></Divider>
               <br></br>
@@ -121,15 +121,11 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
                           </div>
                          
                           <div title="Customer Profile" style={{marginLeft:"25px"}}>
-                              <p > Address</p>
-                              <p style={{ margin: "0em" }}>{`${currentData.country}`}</p>
-                              <p style={{ margin: "0em" }}>{`${currentData.province}`}</p>
-                              <p style={{ margin: "0em" }}>{`${currentData.city}`}</p>
-                              <p style={{ margin: "0em" }}>{`${currentData.postalCode}`}</p>
-                              {/* <p style={{ margin: "0em" }}>{`${currentData.mobileNumber}`}</p> */}
-                              <p style={{ margin: "0em" }}></p>
-                              {/* <p style={{ margin: "0em" }}>{`${currentData.emailId}`}</p> */}
-                              {/*  */}
+                              <p > <b>Address</b></p>
+                              {`${currentData.address} ` + `${currentData.address2} ` + `,`}<br></br>
+                              {`${currentData.country}` + `, ` + `${currentData.province} ` }<br></br>
+                              {`${currentData.city} ` +` - `+ `${currentData.postalCode} `}<br></br>
+
                               <br></br>
                           </div>
                       </Col>

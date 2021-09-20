@@ -28,16 +28,19 @@ const DashboardPage: React.FC = () => {
         { id: "Future", name: "Future" },
         { id: "Parked", name: "Parked" },
     ];
-    const [listLoadedData, setListLoadedData] = useState<any>();
-    const [callListData, setcallListData] = useState<any>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [listData, setListData] = useState<any>();
-    const [listcallData, setListCallData] = useState<any>();
-
+    const [listLoadedData, setListLoadedData] = useState<any>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [loadingList, setLoadingList] = useState<boolean>(false);
     const [isListViewMore, setIsListViewMore] = useState<boolean>(false);
     const [listChuckCount, setListChuckCount] = useState<number>(1);
 
+    const [listcallData, setListCallData] = useState<any>();
+    const [listCallLoadedData, setListCallLoadedData] = useState<any>();
+    const [loadingCallList, setLoadingCallList] = useState<boolean>(false);
+    const [callListData, setcallListData] = useState<any>();
+    const [isCallListViewMore, setIsCallListViewMore] = useState<boolean>(false);
+    const [callListChuckCount, setCallListChuckCount] = useState<number>(1);
 
     const viewMore = async (
         data: any,
@@ -80,7 +83,7 @@ const DashboardPage: React.FC = () => {
 
     const fetchCallsList = async () => {
         const Response = await getCallList();
-        console.log("call - response", Response);
+        // console.log("call - response", Response);
         if (Response.status === 200) {
             viewMore(
                 Response.data.sort((Id1: any, Id2: any) => {
@@ -93,15 +96,17 @@ const DashboardPage: React.FC = () => {
                     return 0;
                 }),
                 setcallListData,
-                setcallListData,
-                setIsListViewMore,
-                setListChuckCount
+                setListCallLoadedData,
+                setIsCallListViewMore,
+                setCallListChuckCount
             );
         }
     }
     const fetchList = async () => {
         const Response = await getAPIList();
-        console.log("dash - response", Response);
+        // console.log("dash - response", Response);
+        // console.log("status", Response.status);
+
         if (Response.status === 200) {
             viewMore(
                 Response.data.sort((Id1: any, Id2: any) => {
@@ -120,27 +125,28 @@ const DashboardPage: React.FC = () => {
             );
         }
     };
-// if(callListData.)
+
     useEffect(() => {
         const fetchInitialData = async () => {
             setIsLoading(true);
             await fetchList();
             setIsLoading(false);
+
+            setLoadingCallList(true);
+            await fetchCallsList();
+            setLoadingCallList(false);
         };
         fetchInitialData();
     }, []);
-    useEffect(() => {
-        const fetchCallData = async () => {
-            setIsLoading(true);
-            await fetchCallsList();
-            setIsLoading(false);
-        };
-        fetchCallData();
-    }, []);
+
     //   const history = useHistory();
     // history.push(`/viewCust:${listData.Id}`)
 
     return (
+        <>
+    {/* {console.log(isListViewMore)} */}
+     
+        
         <Switch>
             <Route exact path={`${path}`}>
                 <div className="admin-page-root client-page-container padding-content">
@@ -182,7 +188,7 @@ const DashboardPage: React.FC = () => {
                                                     <div className="list-header">
                                                         <div className="header-text-wrapper">
                                                             <Row style={{ flexFlow: "wrap-reverse" }} className="user-add-block">
-                                                                <Col > <UserOutlined />{"    View"}</Col>
+                                                                <Col > <UserOutlined /><b>{"   My Clients"}</b></Col>
                                                             </Row>
 
                                                         </div>
@@ -273,7 +279,7 @@ const DashboardPage: React.FC = () => {
                                             <div className="list-header">
                                                 <div className="header-text-wrapper" style={{ width: "50%" }}>
                                                     <Row style={{ flexFlow: "nowrap" }}>
-                                                        <Col span={24}><PhoneOutlined rotate={90} />{"       MyCalls"}</Col>
+                                                        <Col span={24}><PhoneOutlined rotate={90} /><b>{"       My Calls"}</b></Col>
                                                         <Col></Col>
                                                         <Col span={12}>
                                                             {/* <Link to={`${ROUTES.MY_CALLS}/${currentData.Id}`}> */}
@@ -321,18 +327,18 @@ const DashboardPage: React.FC = () => {
                                             </div>
                                         </div>
                                         <List
-                                            loading={loadingList}
+                                            loading={loadingCallList}
                                             loadMore={
-                                                isListViewMore === true ? (
+                                                isCallListViewMore === true ? (
                                                     <div className="load-more">
                                                         <p
                                                             onClick={() => {
                                                                 loadViewMore(
                                                                     listcallData,
                                                                     setcallListData,
-                                                                    setIsListViewMore,
-                                                                    listChuckCount,
-                                                                    setListChuckCount
+                                                                    setIsCallListViewMore,
+                                                                    callListChuckCount,
+                                                                    setCallListChuckCount
                                                                 );
                                                             }}
                                                         >
@@ -346,7 +352,7 @@ const DashboardPage: React.FC = () => {
                                             className="list"
                                             header={""}
                                             itemLayout="horizontal"
-                                            dataSource={callListData}
+                                            dataSource={listCallLoadedData}
                                             renderItem={(callitem: any) => (
                                                 <List.Item extra>
 
@@ -361,13 +367,34 @@ const DashboardPage: React.FC = () => {
                                                         description={`${callitem.city}`}
                                                     />
                                                     <Row>
-                                                        <Col span={12}>
-                                                            
-                                                            <div className="dashboard-status-round-positive" style={{ marginRight: "20px" }}></div>
+                                                        <Col span={12}> 
+                                                        {callitem.EngagementStatus=="2" ? 
+                                                        <div className="dashboard-status-round-positive" style={{ marginRight: "20px" }}></div>
+                                                        :""}
+                                                        {callitem.EngagementStatus=="3" ?
+                                                        <div className="dashboard-status-round-parked" style={{ marginRight: "20px" }}></div>
+                                                        :""}
+                                                        {callitem.EngagementStatus=="1" ?
+                                                        <div className="dashboard-status-round-pursuing" style={{ marginRight: "20px" }}></div>                                                           
+                                                        :"" }
                                                         </Col>
                                                     </Row>
                                                     <Row>
-                                                        <Col span={20}>
+                                                    {callitem.EngagementStatus=="3" ?
+                                                    <Col span={20}> 
+                                                    <Row></Row>                                                      
+                                                    <Row>
+                                                        {/* <h3 style={{ color: "#ff0000" }}><b>{moment(
+                                                        new Date(callitem.NextCallDateTime)
+                                                    ).format('HH:mm')}</b></h3> */}
+                                                    </Row>
+                                                    <Row><h5 style={{ color: "#797980" }}><b>{moment(
+                                                        new Date(callitem.NextCallDateTime)
+                                                    ).format("YYYY-MM-DD")}</b></h5> </Row>
+                                                </Col>
+                                                      
+                                                     :
+                                                        <Col span={20}>                                                        
                                                             <Row><h3 style={{ color: "#ff0000" }}><b>{moment(
                                                                 new Date(callitem.NextCallDateTime)
                                                             ).format('HH:mm')}</b></h3></Row>
@@ -375,8 +402,9 @@ const DashboardPage: React.FC = () => {
                                                                 new Date(callitem.NextCallDateTime)
                                                             ).format("YYYY-MM-DD")}</b></h5> </Row>
                                                         </Col>
+                                            }
                                                         <Col span={3}>
-                                                            <Link to={`${ROUTES.MY_CALLS}/${callitem.Id}`}>
+                                                            <Link to={`${ROUTES.VIEW_CALL_ID}/${callitem.Id}`}>
 
                                                                 <div><h4 style={{ color: "#1fc2c2" }}><b>{`>>`}</b></h4></div>
                                                             </Link>
@@ -396,7 +424,7 @@ const DashboardPage: React.FC = () => {
                 </div>
             </Route>
         </Switch>
-
+        </>
 
     );
 };

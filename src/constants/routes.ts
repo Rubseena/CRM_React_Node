@@ -6,6 +6,7 @@ export const ROUTES = {
   MY_CALLS:"/myCalls",
   VIEW_CUST:"/viewCust",
   VIEW_CUST_ID:"/viewCust/:id",
+  VIEW_CALL_ID:"/updateCalls",
   CALL_REMINDER:"/callReminder",
 
   FORGOT_PASSWORD: "/forgotPassword",

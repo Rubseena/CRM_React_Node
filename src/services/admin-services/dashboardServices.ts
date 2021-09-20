@@ -18,6 +18,9 @@ export const postClientRegisterUser = async (body: any) => {
 export const getCallList = async()=>{
   return axios.get(dataConstants.getCallDetailsUrl);
 };
+export const getCallNameList = async(Id:number)=>{
+  return axios.get(dataConstants.getCallDetailsByIdNameList + "/" + Id);
+};
 export const getCallListById = async(Id:number)=>{
   return axios.get(dataConstants.getCallDetailsByIdUrl + "/" + Id);
 };

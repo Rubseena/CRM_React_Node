@@ -6,48 +6,75 @@ import Avatar from "antd/lib/avatar/avatar";
 import AcceptIcon from "../../assets/icons/check_1.svg";
 import RejectIcon from "../../assets/icons/remove.svg";
 import { callStatus } from "../../constants/constants-data";
-import { getAPIList, getCallNameList, getCustListById, postCallDetails, postClientRegisterUser } from "../../services/admin-services/dashboardServices";
+import { getAPIList, getCallListById, getCallNameList, getCustListById, postCallDetails, postClientRegisterUser } from "../../services/admin-services/dashboardServices";
+import moment, { Moment } from "moment";
+import { time } from "console";
 const { Meta } = Card;
 const { TextArea } = Input;
 
 interface ClientData {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
+  CustData?: any;
+
 }
 interface MyCallData {
-  UserId: string;
-  EngagementStatus: string;
-  Description: string;
-  NextCallDateTime: string;
+  id: string | number;
+  name: string;
+  UserId: any;
+  EngagementStatus: any;
+  Description: any;
+  NextCallDateTime?:any ;  
 }
 
-const MyCallsPage: React.FC = () => {
-
+  const MyCallsPage: React.FC<ClientData> = (props: ClientData) => {
+    const { CustData } = props;
   const { Id }: { Id: string } = useParams();
-  const [clientData, setclientData] = useState<Array<ClientData>>([]);
+  // const [InitialData, setInitialData] = useState<any>();
+  const [clientData, setclientData] = useState<Array<MyCallData>>([]);
+
+
   const [form] = Form.useForm();
-
-  const fetchList = async () => {
-    const Response = await getAPIList();
-    // console.log("dash - response", Response);
-    let clients: Array<ClientData> = [];
-    if (Response.status === 200) {
-      Response.data.map((client: any) => {
-        clients.push({
-          id: client.Id,
-          name: client.firstName + ' ' + client.lastName
-        });
-      })
+  const fetchCustomerCallsbyId = async (Id: number) => {
+    try{
+        console.log("starting call");
+        const Response = await getCallNameList(Id);
+        console.log("Client fetched from homepage ResponseData : ", Response.data[0]);
+        
+        if (Response.status == 200) {
+            if(Response.data.length > 0)
+            {
+              setclientData([Response.data[0]]);
+              
+            }
+        }
     }
-    setclientData(clients);
-    // message.success("Call added  successfully!");
+    catch(err){
+        console.log(err);
+    }      
+};
 
+useEffect(() => {
+  try {
+    const callAllAsyncFunctions = async () => {
+     await fetchCustomerCallsbyId(parseInt(Id));
+    };
+    callAllAsyncFunctions();
+  } catch (err) {
+    console.log(err);
+  }
+  const TempInitialData = {
+    // EngagementStatus: CustData.EngagementStatus,
+    // Description: CustData.Description,
   };
+console.log("TempInitialData:",TempInitialData)
+  // setInitialData(TempInitialData);
+}, [CustData]);
+
 
   const submitCall = async (formValues: any) => {
     try {
       const Response = await postCallDetails(formValues);
-      // console.log("calls:",Response.data)
       if (Response.status === 201) {
         message.success("Saved successfully!");
       }
@@ -57,6 +84,8 @@ const MyCallsPage: React.FC = () => {
   };
   const onFinishInformation = (formValues: any) => {
     let updatedValues: MyCallData = {
+      id:Id,
+      name:formValues.name,
       UserId: formValues.clientId,
       EngagementStatus: formValues.statusId,
       Description: formValues.description,
@@ -65,57 +94,29 @@ const MyCallsPage: React.FC = () => {
     submitCall(updatedValues);
   };
 
+
   const onFinishFailedInformation = (errorInfo: any) => {
     // console.log("Failed:", errorInfo);
   };
 
-  const [currentData, setCurrentData] = useState<MyCallData>();
-
-    const fetchCustomerbyId = async (Id: number) => {
-      try{
-          const Response = await getCustListById(Id);
-          if (Response.status == 200) {
-              // this.items= Response.data;
-              if(Response.data.length > 0)
-              {
-                setCurrentData(Response.data[0]);
-
-                
-              }
-          }
-      }
-      catch(err){
-          console.log(err);
-      }      
-  };
-  useEffect(() => {
-    try {
-      const callAllAsyncFunctions = async () => {
-        await fetchList();
-      };
-      callAllAsyncFunctions();
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-  useEffect(() => {
-    try {
-      const callAllAsyncFunctions = async () => {
-        await fetchCustomerbyId(parseInt(Id));
-      };
-      callAllAsyncFunctions();
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-
+  // useEffect(() => {
+  //   form.setFieldsValue(InitialData);
+  // }, [InitialData]);
+  
+  const dateFormat = "YYYY-MM-DD";
+  const timeFormat = "HH:mm:ss"
+  
   return (
-    <>
-      <div className="mycalls-page-root site-card-border-less-wrapper">
-        <>
+ <>
+ {console.log("clientData:",clientData)}
+ 
+ {clientData.length > 0 && (
+      <div className="mycalls-page-root site-card-border-less-wrapper">       
+       
           <Form
             name={"registration-form"}
             form={form}
+            // initialValues={InitialData}
             onFinish={onFinishInformation}
             onFinishFailed={onFinishFailedInformation}
           >
@@ -135,10 +136,11 @@ const MyCallsPage: React.FC = () => {
                     </Col>
                     <Col span={4}>
                       <Form.Item name="clientId"  >
-                        {/* required: true, rules={[{ message: "Select Client", },]}  */}
-                        <CustomSelect
+                        {/* required: true, rules={[{ message: "Select Client", },]}   */}
+                         <CustomSelect
                           options={clientData}
-                          placeholder="Select"
+                          defaultValue={clientData.length > 0 ? clientData[0].name : ""}
+                          // placeholder="Select"
                           returnId
                           className="header-type-select"
                         />
@@ -152,6 +154,7 @@ const MyCallsPage: React.FC = () => {
                       <Form.Item name="statusId" >
                         <CustomSelect
                           options={callStatus}
+                          defaultValue={clientData.length > 0 ? clientData[0].id : ""}
                           placeholder="Select"
                           returnId
                           className="header-type-select"
@@ -164,22 +167,26 @@ const MyCallsPage: React.FC = () => {
                 <Row>
                   <Col span={10}><b>Call Updates</b><br></br>
                     <Form.Item name="description"  >
-                      <TextArea showCount rows={5} maxLength={100} />
+                      <TextArea showCount rows={5} maxLength={100} 
+                          defaultValue={clientData.length > 0 ? clientData[0].Description : " "}
+                          />
                     </Form.Item>
                   </Col>
                   <Col style={{ marginLeft: "80px" }}>
                     <b>{`  `}Next Call</b>
                     <Row>
                       <Col>
-                        <Form.Item name="date"  >
-                          <DatePicker
-                          />
+                        <Form.Item name="date"  > 
+                                 <DatePicker
+                                  defaultValue={moment(new Date(clientData.length > 0 ?clientData[0].NextCallDateTime:null), dateFormat)}
+                                  format={dateFormat}
+                                />                     
                         </Form.Item>
-
                       </Col>
                       <Col>
                         <Form.Item name="time"  >
-                          <TimePicker />
+                          <TimePicker defaultValue={moment(new Date (clientData.length > 0 ? clientData[0].NextCallDateTime:null).toLocaleTimeString(), timeFormat)}
+                                  format={timeFormat}/>
                         </Form.Item>
                       </Col>
                     </Row>
@@ -207,10 +214,11 @@ const MyCallsPage: React.FC = () => {
                 <br></br>
               </div>
             </div>
-          </Form>
-        </>
+          </Form>      
+       
       </div>
-    </>
+ )}
+ </>
   );
 
 }
