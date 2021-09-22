@@ -27,6 +27,6 @@ export const getCallListById = async(Id:number)=>{
 export const postCallDetails = async (body: any) => {
   return axios.post(dataConstants.postCallDetailsUrl, body);
 };
-export const putCallDetails = async (id: string,body:any) => {
-  return axios.put(dataConstants.putCallDetailsUrl + id );
+export const putCallDetails = async (body:any) => {
+  return axios.put(dataConstants.putCallDetailsUrl + "/" + body );
 }

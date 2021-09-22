@@ -6,9 +6,10 @@ import Avatar from "antd/lib/avatar/avatar";
 import AcceptIcon from "../../assets/icons/check_1.svg";
 import RejectIcon from "../../assets/icons/remove.svg";
 import { callStatus } from "../../constants/constants-data";
-import { getAPIList, getCallListById, getCallNameList, getCustListById, postCallDetails, postClientRegisterUser } from "../../services/admin-services/dashboardServices";
+import { getAPIList, getCallListById, getCallNameList, getCustListById, postCallDetails, putCallDetails } from "../../services/admin-services/dashboardServices";
 import moment, { Moment } from "moment";
 import { time } from "console";
+
 const { Meta } = Card;
 const { TextArea } = Input;
 
@@ -16,8 +17,8 @@ interface ClientData {
   id?: number;
   name?: string;
   CustData?: any;
-
 }
+
 interface MyCallData {
   id: string | number;
   name: string;
@@ -30,22 +31,28 @@ interface MyCallData {
   const MyCallsPage: React.FC<ClientData> = (props: ClientData) => {
     const { CustData } = props;
   const { Id }: { Id: string } = useParams();
-  // const [InitialData, setInitialData] = useState<any>();
+  const [form] = Form.useForm();
+
+  const [InitialData, setInitialData] = useState<any>();
+
+  // const [clientName, setClientName] = useState("");
+  // const [callStatus, setCallStatus] = useState("");
+  // const [descrText, setDescrText] = useState("");
+  // const [dateData, setDateData] = useState("");
+
   const [clientData, setclientData] = useState<Array<MyCallData>>([]);
 
 
-  const [form] = Form.useForm();
+ 
   const fetchCustomerCallsbyId = async (Id: number) => {
     try{
-        console.log("starting call");
         const Response = await getCallNameList(Id);
-        console.log("Client fetched from homepage ResponseData : ", Response.data[0]);
+        console.log("ResponseData fetched from homepage  : ", Response.data[0]);
         
         if (Response.status == 200) {
             if(Response.data.length > 0)
             {
-              setclientData([Response.data[0]]);
-              
+              setclientData([Response.data[0]]);              
             }
         }
     }
@@ -63,40 +70,41 @@ useEffect(() => {
   } catch (err) {
     console.log(err);
   }
-  const TempInitialData = {
-    // EngagementStatus: CustData.EngagementStatus,
-    // Description: CustData.Description,
-  };
-console.log("TempInitialData:",TempInitialData)
-  // setInitialData(TempInitialData);
+  
 }, [CustData]);
 
 
   const submitCall = async (formValues: any) => {
     try {
-      const Response = await postCallDetails(formValues);
+      const Response = await putCallDetails(formValues);
+      console.log("ResponseData :",Response.data);
       if (Response.status === 201) {
-        message.success("Saved successfully!");
+        message.success("Updated successfully!");
       }
     } catch (error) {
       message.error("submission failed. Network error");
     }
   };
   const onFinishInformation = (formValues: any) => {
-    let updatedValues: MyCallData = {
-      id:Id,
+    let updatedValues: MyCallData = {      
+      id:formValues.UserId,
       name:formValues.name,
-      UserId: formValues.clientId,
+      UserId: formValues.UserId,
       EngagementStatus: formValues.statusId,
       Description: formValues.description,
       NextCallDateTime: formValues.date.format("YYYY-MM-DD") + " " + formValues.time.format("HH:mm:ss")
     };
+    console.log("updatedValuesonfinish : ",updatedValues)
+    console.log("updatedValues.id : ",updatedValues.UserId)
+
     submitCall(updatedValues);
+    console.log("formValues",formValues)
+
   };
 
 
   const onFinishFailedInformation = (errorInfo: any) => {
-    // console.log("Failed:", errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   // useEffect(() => {
@@ -108,7 +116,6 @@ console.log("TempInitialData:",TempInitialData)
   
   return (
  <>
- {console.log("clientData:",clientData)}
  
  {clientData.length > 0 && (
       <div className="mycalls-page-root site-card-border-less-wrapper">       
@@ -119,6 +126,7 @@ console.log("TempInitialData:",TempInitialData)
             // initialValues={InitialData}
             onFinish={onFinishInformation}
             onFinishFailed={onFinishFailedInformation}
+            
           >
             <div style={{ margin: "80px 280px 150px 180px", backgroundColor: "#EAEDED", border: "1px solid black" }} >
               <div style={{ marginLeft: "25px" }}>
@@ -135,26 +143,37 @@ console.log("TempInitialData:",TempInitialData)
                       <p><b>Select Client</b></p>
                     </Col>
                     <Col span={4}>
-                      <Form.Item name="clientId"  >
-                        {/* required: true, rules={[{ message: "Select Client", },]}   */}
+                      <Form.Item name="UserId" noStyle initialValue= {clientData.length > 0 ? clientData[0].UserId : ""}><Input /></Form.Item>
+                      <Form.Item name="clientId" initialValue= {clientData.length > 0 ? clientData[0].name : ""}
+                       rules={[
+                                {
+                                    required: true,
+                                    message: "Select the Type of User",
+                                },
+                            ]} >
                          <CustomSelect
                           options={clientData}
-                          defaultValue={clientData.length > 0 ? clientData[0].name : ""}
-                          // placeholder="Select"
                           returnId
                           className="header-type-select"
                         />
                       </Form.Item>
+                     
 
                     </Col>
                     <Col span={5}></Col>
                     <Col style={{ marginLeft: "6px" }}><p><b>Status</b></p></Col>
                     <Col span={1}></Col>
                     <Col span={4}>
-                      <Form.Item name="statusId" >
+                      <Form.Item name="statusId" initialValue= {clientData.length > 0 ? clientData[0].id : ""}
+                       rules={[
+                                {
+                                    required: true,
+                                    message: "Status required",
+                                },
+                            ]} >
                         <CustomSelect
                           options={callStatus}
-                          defaultValue={clientData.length > 0 ? clientData[0].id : ""}
+                          // defaultValue={clientData.length > 0 ? clientData[0].id : ""}
                           placeholder="Select"
                           returnId
                           className="header-type-select"
@@ -166,27 +185,63 @@ console.log("TempInitialData:",TempInitialData)
 
                 <Row>
                   <Col span={10}><b>Call Updates</b><br></br>
-                    <Form.Item name="description"  >
+                    <Form.Item name="description" initialValue= {clientData.length > 0 ? clientData[0].Description : ""}
+                       rules={[
+                                {
+                                    required: true,
+                                    message: "Description required",
+                                },
+                            ]}  >
                       <TextArea showCount rows={5} maxLength={100} 
-                          defaultValue={clientData.length > 0 ? clientData[0].Description : " "}
+                          // defaultValue={clientData.length > 0 ? clientData[0].Description : " "}
                           />
                     </Form.Item>
+                    {/* <Form.Item name="id"  initialValue= {clientData.length > 0 ? clientData[0].id : ""}
+                       rules={[
+                                {
+                                    required: true,
+                                    message: "Id needed",
+                                },
+                            ]} >
+                    <label 
+                    // defaultValue={clientData.length > 0 ? clientData[0].id : " "}
+                    >
+
+                    </label>
+                    </Form.Item> */}
                   </Col>
                   <Col style={{ marginLeft: "80px" }}>
                     <b>{`  `}Next Call</b>
                     <Row>
                       <Col>
-                        <Form.Item name="date"  > 
+                        <Form.Item name="date" initialValue= {clientData.length > 0 ?clientData[0].NextCallDateTime:null}
+                                  // {moment(new Date(clientData.length > 0 ?clientData[0].NextCallDateTime:null), dateFormat)} format={dateFormat}
+                       rules={[
+                                {
+                                    required: true,
+                                    message: "date required",
+                                },
+                            ]}  > 
                                  <DatePicker
-                                  defaultValue={moment(new Date(clientData.length > 0 ?clientData[0].NextCallDateTime:null), dateFormat)}
+                                  // defaultValue={moment(new Date(clientData.length > 0 ?clientData[0].NextCallDateTime:null), dateFormat)}
                                   format={dateFormat}
                                 />                     
                         </Form.Item>
                       </Col>
                       <Col>
-                        <Form.Item name="time"  >
-                          <TimePicker defaultValue={moment(new Date (clientData.length > 0 ? clientData[0].NextCallDateTime:null).toLocaleTimeString(), timeFormat)}
-                                  format={timeFormat}/>
+                        <Form.Item name="time" initialValue={clientData.length > 0 ?clientData[0].NextCallDateTime:null}
+                        // {moment(new Date (clientData.length > 0 ? clientData[0].NextCallDateTime:null), timeFormat)} format={timeFormat}
+                        rules={[
+                          {
+                              required: true,
+                              message: "time required",
+                          },
+                      ]} 
+                          >
+                          <TimePicker 
+                          // defaultValue={moment(new Date (clientData.length > 0 ? clientData[0].NextCallDateTime:null).toLocaleTimeString(), timeFormat)}
+                           format={timeFormat}
+                                  />
                         </Form.Item>
                       </Col>
                     </Row>

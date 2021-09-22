@@ -21,7 +21,7 @@ const DashboardPage: React.FC = () => {
         time = moment(today, "HH:mm:ss").format("h:mm A");
     const { path } = useRouteMatch();
     const itemsInView = 10;
-    const invoiceOptions = [
+    const CallOptions = [
         { id: "All", name: "All" },
         { id: "Positive", name: "Postive" },
         { id: "Pursuing", name: "Pursuing" },
@@ -315,7 +315,7 @@ const DashboardPage: React.FC = () => {
                                            */}
                                                 <div className="header-type-wrapper">
                                                     <CustomSelect
-                                                        options={invoiceOptions}
+                                                        options={CallOptions}
                                                         placeholder="All"
                                                         returnId
                                                         className="header-type-select"
