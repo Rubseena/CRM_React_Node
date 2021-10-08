@@ -1,5 +1,5 @@
 import React,{useEffect} from "react";
-import {BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import {BrowserRouter,HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/private-route/private-route.component";
 import RegisterPage from "./pages/register/register.page";
 import DashboardPage from "./pages/dashboard/dashboard.page";
@@ -20,7 +20,8 @@ const App: React.FC = () => {
   return (
     <Row className="main-row">
       <Col xs={24} md={24} lg={24}>
-        <BrowserRouter>
+        {/* <BrowserRouter> */}
+        <HashRouter>
         <Switch>  
           <Route path={ROUTES.HOME} component={DashboardPage} exact />
           <Route path={ROUTES.REGISTER} component={RegisterPage} exact /> 
@@ -34,7 +35,8 @@ const App: React.FC = () => {
           />
           <Redirect exact path="/" to="/home" />
         </Switch>
-        </BrowserRouter>
+        </HashRouter>
+        {/* </BrowserRouter> */}
       </Col>
     </Row>
   );

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./register-form.styles.scss";
 import CustomInputField from "../../components/custom-input-field/custom-input-field.component";
-import { Row, Button, Form, DatePicker, Upload, message, Checkbox, Input } from "antd";
+import { Row, Button, Form, DatePicker, Upload, message, Checkbox, Input, Col } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { convertBase64, displayBase64 } from "../../utils/helper";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const EmailRegex = "[\\S]+[@][\\S]+[.][\\S]+";
 const MobileRegex = "[0-9]{10}";
@@ -73,6 +73,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = (
         </div>
     );
 
+   
     const handleUpload = async (event: any) => {
         console.log("INFO: ", event);
         setLoading(true);
@@ -101,6 +102,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = (
     };
 
     return (
+        
         <Form
             name={"registration-form"}
             form={form}
@@ -108,6 +110,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = (
             onFinish={onFinishInformation}
             onFinishFailed={onFinishFailedInformation}
         >
+             
             <p style={{color:"#1fc2c2",textAlign:"center"}}><b>{message}</b></p>
                <Row justify="start" style={{ marginBottom: 0}}>
                  <div className="upload-image">
@@ -178,12 +181,12 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = (
          
             <Row justify="space-between">
                 <Button 
+                    // onClick={handleRoute}
                     type="primary"
                     htmlType="submit"
                     className="progress-button keep-right">
                     {"SUBMIT"}
                 </Button>
-                {/* onClick={handleRoute} */}
             </Row>
             <br></br>
         </Form>

@@ -16,11 +16,19 @@ const dataConstants = {
     getCallDetailsByIdNameList: `${endpointurl}/api/updatecalls`,
     postCallDetailsUrl: `${endpointurl}/api/mycalls`,
     putCallDetailsUrl: `${endpointurl}/api/updatecalls`,
-    
-
+    getReminder: `${endpointurl}/api/reminder`,
+    getEngagementStatusListUrl: `${endpointurl}/api/get-engagement-status/`
 }
 
 export default dataConstants;
+
+export const callStatus = [
+  // { id: "0", name: "New" },
+  { id: "1", name: "Pursuing" },//orange
+  { id: "2", name: "Positive" },//green
+  { id: "3", name: "Parked" },//red
+];
+
 
 export const textResources = {
   welcomeText: `Welcome to Care & Smile`,
@@ -58,9 +66,3 @@ export const textResources = {
   exceptionMessage: `Something went wrong. Please contact your administrator.`,
 };
 
-export const callStatus = [
-  // { id: "0", name: "New" },
-  { id: "1", name: "Pursuing" },//orange
-  { id: "2", name: "Positive" },//green
-  { id: "3", name: "Parked" },//red
-];

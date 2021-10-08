@@ -80,11 +80,15 @@ const ViewCustPage: React.FC<ViewCustProps> = (props: ViewCustProps) => {
     return (
         <>
         {console.log(currentData)}
-    {currentData && (        
+    {currentData && ( 
+               
           <div className="mycalls-page-root site-card-border-less-wrapper" >
+               <Col xs={20} md={20} lg={20}>
+                 <Link to="/home" style={{ padding: '25px', fontSize: '25px', color: '#1fc2c2'}}>Home</Link>
+            </Col>
           <div style={{ margin: "80px 280px 150px 180px", backgroundColor: "#EAEDED", border: "1px solid black" }}  >
               <div style={{ marginLeft: "25px" , marginTop:"10px"}}>
-                  <p><b>Customer Profile</b></p>
+                  <p><b>Client Profile</b></p>
                   {/* <p>{`${currentData.firstName}`} {`${currentData.lastName}`}</p> */}
               </div>
               <Divider plain></Divider>

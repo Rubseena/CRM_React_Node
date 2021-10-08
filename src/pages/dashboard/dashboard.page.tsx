@@ -7,25 +7,32 @@ import addclient from "../../assets/icons/add_client.svg";
 import whatsapp from "../../assets/icons/whatsapp.svg";
 import "./dashboard.styles.scss";
 import CustomSelect from "../../components/custom-select/custom-select.component";
-import moment from "moment";
+// import moment from "moment";
+import moment from 'moment-timezone';
+
 import { UserOutlined, PhoneOutlined, PlusOutlined } from '@ant-design/icons';
 import {
     getAPIList,
-    getCallList
+    getCallList,
+    getEngagementStatusList
 } from "../../services/admin-services/dashboardServices";
 const DashboardPage: React.FC = () => {
 
-    var today = new Date(),
-        date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    var today = new Date(),
-        time = moment(today, "HH:mm:ss").format("h:mm A");
+    // moment.tz.setDefault("America/Los_Angeles");
+    // moment.tz.setDefault("Asia/Calcutta|Asia/Kolkata");
+    moment.tz.setDefault("Europe/London");
+
+    // var today = new Date(),
+    //     date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    // var today = new Date(),
+    //     time = moment(today, "HH:mm:ss").format("h:mm A");
     const { path } = useRouteMatch();
     const itemsInView = 10;
     const CallOptions = [
         { id: "All", name: "All" },
         { id: "Positive", name: "Postive" },
         { id: "Pursuing", name: "Pursuing" },
-        { id: "Future", name: "Future" },
+        // { id: "Future", name: "Future" },
         { id: "Parked", name: "Parked" },
     ];
     const [listData, setListData] = useState<any>();
@@ -126,6 +133,29 @@ const DashboardPage: React.FC = () => {
         }
     };
 
+    const fetchStatusRequest = async (
+        status: "All" | "Pursuing" | "Positive" | "Parked"
+      ) => {
+        const Response = await getEngagementStatusList(status);
+        if (Response.status === 200) {
+            viewMore(
+                Response.data.sort((Id1: any, Id2: any) => {
+                    if (Id1.Id < Id2.Id) {
+                        return 1;
+                    }
+                    if (Id1.Id > Id2.Id) {
+                        return -1;
+                    }
+                    return 0;
+                }),
+                setcallListData,
+                setListLoadedData,
+                setIsListViewMore,
+                setListChuckCount
+          );
+        }
+      };
+
     useEffect(() => {
         const fetchInitialData = async () => {
             setIsLoading(true);
@@ -144,9 +174,6 @@ const DashboardPage: React.FC = () => {
 
     return (
         <>
-    {/* {console.log(isListViewMore)} */}
-     
-        
         <Switch>
             <Route exact path={`${path}`}>
                 <div className="admin-page-root client-page-container padding-content">
@@ -170,7 +197,7 @@ const DashboardPage: React.FC = () => {
                                                 >
                                                     <Link to={`${ROUTES.REGISTER}`}>
                                                         <LandingPageButton
-                                                            label="Add Customer"
+                                                            label="Add Client"
                                                             imageUrl={addclient}
                                                         />
                                                     </Link>
@@ -192,30 +219,7 @@ const DashboardPage: React.FC = () => {
                                                             </Row>
 
                                                         </div>
-                                                        {/* <div className="header-count-wrapper">
-                                                    <Button
-                                                        type="primary"
-                                                        size="small"
-                                                        style={{
-                                                            background: "#FFA62F",
-                                                            borderColor: "#FFA62F",
-                                                        }}
-                                                        shape="round"
-                                                    >
-                                                        {listData && listData.length}
-                                                    </Button>
-                                                </div> */}
-                                                        {/* <div className="header-type-wrapper">
-                                                    <CustomSelect
-                                                        options={invoiceOptions}
-                                                        placeholder="All"
-                                                        returnId
-                                                        className="header-type-select"
-                                                        onChange={async (id) => {
-                                                            //   await fetchInvoice(id);
-                                                        }}
-                                                    />
-                                                </div> */}
+                                                     
                                                     </div>
                                                 </div>
 
@@ -319,8 +323,9 @@ const DashboardPage: React.FC = () => {
                                                         placeholder="All"
                                                         returnId
                                                         className="header-type-select"
+                                                        // onChange={e => setState({filter: e.target.value})}
                                                         onChange={async (id) => {
-                                                            //   await fetchInvoice(id);
+                                                              await fetchStatusRequest(id);
                                                         }}
                                                     />
                                                 </div>
@@ -367,7 +372,7 @@ const DashboardPage: React.FC = () => {
                                                         description={`${callitem.city}`}
                                                     />
                                                     <Row>
-                                                        <Col span={12}> 
+                                                        <Col span={15}> 
                                                         {callitem.EngagementStatus=="2" ? 
                                                         <div className="dashboard-status-round-positive" style={{ marginRight: "20px" }}></div>
                                                         :""}
@@ -384,9 +389,6 @@ const DashboardPage: React.FC = () => {
                                                     <Col span={20}> 
                                                     <Row></Row>                                                      
                                                     <Row>
-                                                        {/* <h3 style={{ color: "#ff0000" }}><b>{moment(
-                                                        new Date(callitem.NextCallDateTime)
-                                                    ).format('HH:mm')}</b></h3> */}
                                                     </Row>
                                                     <Row><h5 style={{ color: "#797980" }}><b>{moment(
                                                         new Date(callitem.NextCallDateTime)
@@ -395,12 +397,14 @@ const DashboardPage: React.FC = () => {
                                                       
                                                      :
                                                         <Col span={20}>                                                        
-                                                            <Row><h3 style={{ color: "#ff0000" }}><b>{moment(
-                                                                new Date(callitem.NextCallDateTime)
-                                                            ).format('HH:mm')}</b></h3></Row>
-                                                            <Row><h5 style={{ color: "#797980" }}><b>{moment(
-                                                                new Date(callitem.NextCallDateTime)
-                                                            ).format("YYYY-MM-DD")}</b></h5> </Row>
+                                                            <Row><h4 style={{ color: "#ff0000" }}>
+                                                                <b>   
+                                                            {moment(new Date(callitem.NextCallDateTime)).utc().format('h:mm A')}
+                                                            </b>
+                                                            </h4></Row>
+                                                            <Row><h5 style={{ color: "#797980" }}>
+                                                                <b>
+                                                                {moment(new Date(callitem.NextCallDateTime)).utc().format("YYYY-MM-DD")}</b></h5> </Row>
                                                         </Col>
                                             }
                                                         <Col span={3}>
@@ -429,3 +433,6 @@ const DashboardPage: React.FC = () => {
     );
 };
 export default DashboardPage;
+
+
+

@@ -1,6 +1,6 @@
-import { Button, Card, Col, DatePicker, Descriptions, Divider, Form, Input, Row, Space, TimePicker, message } from "antd";
+import { Button, Card, Col, DatePicker, Descriptions, Divider, Form, Input, Row, Space, TimePicker, message, Steps } from "antd";
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { Switch, Route, useRouteMatch, Link, useParams } from "react-router-dom";
+import { Switch, Route, useRouteMatch, Link, useParams, useHistory } from "react-router-dom";
 import CustomSelect from "../../components/custom-select/custom-select.component";
 import Avatar from "antd/lib/avatar/avatar";
 import AcceptIcon from "../../assets/icons/check_1.svg";
@@ -64,6 +64,12 @@ const MyCallsPage: React.FC = () => {
     };
     submitCall(updatedValues);
   };
+  
+  const history = useHistory();
+
+  const handleRoute = () =>{ 
+    history.push("/home");
+  }
 
   const onFinishFailedInformation = (errorInfo: any) => {
     // console.log("Failed:", errorInfo);
@@ -108,7 +114,9 @@ const MyCallsPage: React.FC = () => {
       console.log(err);
     }
   }, []);
-
+  const dateFormat = "YYYY-MM-DD";
+  const timeFormat = "h:mm:ss"
+  const { Step } = Steps;
   return (
     <>
       <div className="mycalls-page-root site-card-border-less-wrapper">
@@ -119,8 +127,13 @@ const MyCallsPage: React.FC = () => {
             onFinish={onFinishInformation}
             onFinishFailed={onFinishFailedInformation}
           >
+            <Col xs={20} md={20} lg={20}>
+                 <Link to="/home" style={{ padding: '25px', fontSize: '25px', color: '#1fc2c2'}}>Home</Link>
+            </Col>
             <div style={{ margin: "80px 280px 150px 180px", backgroundColor: "#EAEDED", border: "1px solid black" }} >
               <div style={{ marginLeft: "25px" }}>
+              
+
                 <p><b>My Calls</b></p>
               </div>
               <Divider plain></Divider>
@@ -172,14 +185,14 @@ const MyCallsPage: React.FC = () => {
                     <Row>
                       <Col>
                         <Form.Item name="date"  >
-                          <DatePicker
+                          <DatePicker format={dateFormat}
                           />
                         </Form.Item>
 
                       </Col>
                       <Col>
                         <Form.Item name="time"  >
-                          <TimePicker />
+                          <TimePicker format={timeFormat}/>
                         </Form.Item>
                       </Col>
                     </Row>
@@ -189,6 +202,7 @@ const MyCallsPage: React.FC = () => {
                 <Row align="middle" style={{ paddingLeft: "250px" }}>
                   <Col span={6}>
                     <Button
+                    //  onClick={handleRoute}
                       style={{ height: "40px", width: "40px", cursor: "pointer", fontSize: "1em", fontWeight: "bold", borderRadius: "50%", backgroundColor: "#1fc2c2", color: "white", border: "1px solid #1fc2c2", textAlign: "center" }}
                       htmlType="submit"
                     >
@@ -196,7 +210,7 @@ const MyCallsPage: React.FC = () => {
                     </Button>
                   </Col>
                   <Col>
-                    <Button
+                    <Button onClick={handleRoute}
                       style={{ height: "40px", width: "40px", cursor: "pointer", fontSize: "1em", fontWeight: "bold", borderRadius: "50%", backgroundColor: "red", color: "white", border: "1px solid red", textAlign: "center" }}
                       htmlType="reset"
                     >
